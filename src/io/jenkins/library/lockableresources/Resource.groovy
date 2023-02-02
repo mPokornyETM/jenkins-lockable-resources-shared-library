@@ -31,7 +31,7 @@ class Resource {
   //----------------------------------------------------------------------------
   @NonCPS
   @Synchronized
-  public void create() {
+  public synchronized void create() {
     if (LRM.resourceExists(this.name)) {
       throw new Exception();
     }
