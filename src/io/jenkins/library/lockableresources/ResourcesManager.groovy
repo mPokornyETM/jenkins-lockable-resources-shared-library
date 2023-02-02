@@ -46,9 +46,8 @@ class ResourcesManager {
   @Restricted(NoExternalUse.class)
   @CheckForNull
   public static List<LockableResource> getResources(@NonNull List<String> resourceNames) {
-
     List<LockableResource> retList = [];
-    for (resourceName : resourceNames) {
+    for (String resourceName : resourceNames) {
       retList.push(ResourcesManager.getResourceOrDie(resourceName));
     }
     return retList;
