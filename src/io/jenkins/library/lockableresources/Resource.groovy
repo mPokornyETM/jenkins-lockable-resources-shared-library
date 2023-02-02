@@ -23,7 +23,6 @@ class Resource {
   }
 
   //---------------------------------------------------------------------------
-  @NonCPS
   public Resource(@NonNull LockableResource resource) {
     this.resource = resource;
   }
