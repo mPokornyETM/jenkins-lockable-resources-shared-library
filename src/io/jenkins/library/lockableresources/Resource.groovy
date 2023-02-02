@@ -41,7 +41,7 @@ class Resource {
   //----------------------------------------------------------------------------
   @NonCPS
   public boolean isFree() {
-    return (!resource.isLocked() && !resource.isReserved() && !resource.isQueued());
+    return (!this.resource.isLocked() && !this.resource.isReserved() && !this.resource.isQueued());
   }
 
   //----------------------------------------------------------------------------
@@ -85,5 +85,15 @@ class Resource {
   @NonCPS
   public boolean isEphemeral() {
     return this.resource.ephemeral;
+  }
+
+  //----------------------------------------------------------------------------
+  @NonCPS
+  public static List<Resource> toSafeList(@NonNull List<LockableResource> list) {
+    List<Resource> ret = [];
+    for(LockableResource r : list) {
+      ret.push(new Resource(r));
+    }
+    return ret;
   }
 }

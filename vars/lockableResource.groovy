@@ -1,6 +1,10 @@
 #!groovy
 
-import org.jenkins.plugins.lockableresources.LockableResourcesManager as LRM
+import io.jenkins.library.lockableresources.Resource;
+import io.jenkins.library.lockableresources.ResourcesManager as RM;
+
+import edu.umd.cs.findbugs.annotations.NonNull;
+import edu.umd.cs.findbugs.annotations.CheckForNull;
 
 //-----------------------------------------------------------------------------
 /** Returns {@code LockableResource} resource.
@@ -9,8 +13,8 @@ import org.jenkins.plugins.lockableresources.LockableResourcesManager as LRM
 */
 @NonCPS
 @CheckForNull
-LockableResource call(String resourceName) {
-  return get(String name);
+Resource call(String resourceName) {
+  return new Resource(RM.getResourceOrDie(resourceName));
 }
 
 //-----------------------------------------------------------------------------
@@ -20,8 +24,8 @@ LockableResource call(String resourceName) {
 */
 @NonCPS
 @CheckForNull
-LockableResource get(String resourceName) {
-  return LRM.fromName(name);
+Resource find(String resourceName) {
+  return new Resource(RM.getResource(resourceName));
 }
 
 //-----------------------------------------------------------------------------
@@ -30,60 +34,32 @@ LockableResource get(String resourceName) {
   NonCPS because the LockableResource is not serializable.
 */
 @NonCPS
-LockableResource getOrDie(String resourceName) {
-  LockableResource resource = get(resourceName);
-  if (resource == null) {
-    throw new Exception("Lockable resource '$resourceName' does not exist!");
-  }
-  return resource;
-}
-
-//-----------------------------------------------------------------------------
-/** Returns {@code LockableResource} resource.
-  @return Lockable-resource or null when does not exists.
-  NonCPS because the LockableResource is not serializable.
-*/
-@NonCPS
-LockableResource get(List<String> resourceNames) {
-
-  List<LockableResource> retList = [];
-  for (resourceName : resourceNames) {
-    LockableResource resource = get(resourceName);
-    if (resource != null)
-      retList.push(resource);
-  }
-  return retList;
+List<Resource> find(List<String> resourceNames) {
+  return Resource.toSafeList(RM.getResources(resourceNames));
 }
 
 //-----------------------------------------------------------------------------
 @NonCPS
 List<LockableResource> getAll() {
-  return LRM.getResources();
+  return Resource.toSafeList(RM.getResources());
 }
 
 //------------------------------------------------------------------------------
 @NonCPS
 boolean isFree(@NonNull String resourceName) {
-  LockableResource resource = get(resourceName);
-  if (resource == null) {
-    throw new Exception("Lockable resource '$resourceName' does not exist!");
-  }
-  return isFree(resource);
+  Resource resource = new Resource(resourceName);
+  return resource.isFree();
 }
 
 //------------------------------------------------------------------------------
 @NonCPS
-boolean isFree(@NonNull LockableResource resource) {
-  return (!resource.isLocked() && !resource.isReserved() && !resource.isQueued());
+void _lock(Resource resource, closure) {
+  _lock(resource.getName(), closure);
 }
 
-//------------------------------------------------------------------------------
-@NonCPS
-boolean isFree(@NonNull List<String> resourceNames) {
-  LockableResource resource = get(resourceName);
-  if (resource == null) {
-    throw new Exception("Lockable resource '$resourceName' does not exist!");
+void _lock(String resourceName, closure) {
+  lock(resourceName) {
+    closure();
   }
-  return (!resource.isLocked() && !resource.isReserved() && !resource.isQueued());
 }
 
