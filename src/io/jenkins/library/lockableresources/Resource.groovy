@@ -1,5 +1,5 @@
 #!groovy
-package io.jenkins.library.lockableresources
+package io.jenkins.library.lockableresources;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 import groovy.transform.Synchronized;

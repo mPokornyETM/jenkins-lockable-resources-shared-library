@@ -1,9 +1,10 @@
 #!groovy
-package io.jenkins.library.lockableresources
+package io.jenkins.library.lockableresources;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.NonNull;
-import org.jenkins.plugins.lockableresources.ResourcesManager;
+import io.jenkins.library.lockableresources.Resource;
+import org.jenkins.plugins.lockableresources.LockableResourcesManager as LRM;
 import org.jenkins.plugins.lockableresources.LockableResource;
 import org.kohsuke.accmod.Restricted;
 import org.kohsuke.accmod.restrictions.NoExternalUse;
