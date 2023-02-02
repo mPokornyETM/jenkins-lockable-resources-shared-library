@@ -3,8 +3,8 @@ package io.jenkins.library.lockableresources
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.NonNull;
-import io.jenkins.plugins.lockableresources.ResourcesManager
-import io.jenkins.plugins.lockableresources.LockableResource
+import org.jenkins.plugins.lockableresources.ResourcesManager;
+import org.jenkins.plugins.lockableresources.LockableResource;
 import org.kohsuke.accmod.Restricted;
 import org.kohsuke.accmod.restrictions.NoExternalUse;
 
