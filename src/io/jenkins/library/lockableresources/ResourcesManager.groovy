@@ -20,7 +20,7 @@ class ResourcesManager {
   @NonCPS
   @Restricted(NoExternalUse.class)
   public static LockableResource getResource(@NonNull String resourceName) {
-    return LRM.fromName(resourceName);
+    return LRM.get().fromName(resourceName);
   }
 
   //---------------------------------------------------------------------------
@@ -57,13 +57,13 @@ class ResourcesManager {
   //---------------------------------------------------------------------------
   @Restricted(NoExternalUse.class)
   public static List<LockableResource> getAllResource() {
-    return LRM.getResources();
+    return LRM.get().getResources();
   }
 
   //---------------------------------------------------------------------------
   @Restricted(NoExternalUse.class)
   public static void save() {
-    LRM.save();
+    LRM.get().save();
   }
 
   //---------------------------------------------------------------------------
