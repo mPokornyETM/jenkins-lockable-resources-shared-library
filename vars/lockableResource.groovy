@@ -40,7 +40,7 @@ List<Resource> find(List<String> resourceNames) {
 
 //-----------------------------------------------------------------------------
 @NonCPS
-List<LockableResource> getAll() {
+List<Resource> getAll() {
   return Resource.toSafeList(RM.getResources());
 }
 
