@@ -51,6 +51,7 @@ class Resource {
   }
 
   //----------------------------------------------------------------------------
+  @NonCPS
   public String toString() {
     return this.getName();
   }
