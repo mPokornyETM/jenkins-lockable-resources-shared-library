@@ -7,7 +7,7 @@ import io.jenkins.library.lockableresources.ResourcesManager;
 
 //-----------------------------------------------------------------------------
 void call(@NonNull String resourceName, @NonNull def closure) {
-  lockResource(resourceName, [:]);
+  lockResource(resourceName, [:], closure);
 }
 
 //-----------------------------------------------------------------------------
@@ -19,5 +19,5 @@ void call(@NonNull String resourceName, @NonNull Map opts, @NonNull def closure)
     resource.create();
     opts = null;
   }
-  lockableResource._lock(resourceName, opts);
+  lockableResource._lock(resourceName, opts, closure);
 }
