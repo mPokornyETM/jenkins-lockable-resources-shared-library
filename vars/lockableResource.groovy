@@ -11,7 +11,7 @@ import edu.umd.cs.findbugs.annotations.CheckForNull;
   @return Lockable-resource or null when does not exists.
   NonCPS because the LockableResource is not serializable.
 */
-@NonCPS
+//@NonCPS
 @CheckForNull
 Resource call(String resourceName) {
   return new Resource(RM.getResourceOrDie(resourceName));
@@ -22,7 +22,7 @@ Resource call(String resourceName) {
   @return Lockable-resource or null when does not exists.
   NonCPS because the LockableResource is not serializable.
 */
-@NonCPS
+//@NonCPS
 @CheckForNull
 Resource find(String resourceName) {
   return new Resource(RM.getResource(resourceName));
@@ -33,19 +33,19 @@ Resource find(String resourceName) {
   @return Lockable-resource or null when does not exists.
   NonCPS because the LockableResource is not serializable.
 */
-@NonCPS
+//@NonCPS
 List<Resource> find(List<String> resourceNames) {
   return Resource.toSafeList(RM.getResources(resourceNames));
 }
 
 //-----------------------------------------------------------------------------
-@NonCPS
+//@NonCPS
 List<Resource> getAll() {
   return Resource.toSafeList(RM.getResources());
 }
 
 //------------------------------------------------------------------------------
-@NonCPS
+//@NonCPS
 boolean isFree(@NonNull String resourceName) {
   Resource resource = new Resource(resourceName);
   return resource.isFree();

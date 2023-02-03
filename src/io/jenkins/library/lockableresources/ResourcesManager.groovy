@@ -17,7 +17,7 @@ class ResourcesManager {
     @return Lockable-resource or null when does not exists.
     NonCPS because the LockableResource is not serializable.
   */
-  @NonCPS
+  //@NonCPS
   @Restricted(NoExternalUse.class)
   public static LockableResource getResource(@NonNull String resourceName) {
     return LRM.get().fromName(resourceName);
@@ -28,7 +28,7 @@ class ResourcesManager {
     @return Lockable-resource or null when does not exists.
     NonCPS because the LockableResource is not serializable.
   */
-  @NonCPS
+  //@NonCPS
   @Restricted(NoExternalUse.class)
   public static LockableResource getResourceOrDie(@NonNull String resourceName) {
     LockableResource resource = ResourcesManager.getResource(resourceName);
@@ -43,7 +43,7 @@ class ResourcesManager {
     @return Lockable-resource or null when does not exists.
     NonCPS because the LockableResource is not serializable.
   */
-  @NonCPS
+  //@NonCPS
   @Restricted(NoExternalUse.class)
   @CheckForNull
   public static List<LockableResource> getResources(@NonNull List<String> resourceNames) {
@@ -55,21 +55,21 @@ class ResourcesManager {
   }
 
   //---------------------------------------------------------------------------
-  @NonCPS
+  //@NonCPS
   @Restricted(NoExternalUse.class)
   public static List<LockableResource> getAllResources() {
     return LRM.get().getResources();
   }
 
   //---------------------------------------------------------------------------
-  @NonCPS
+  //@NonCPS
   @Restricted(NoExternalUse.class)
   public static void save() {
     LRM.get().save();
   }
 
   //---------------------------------------------------------------------------
-  @NonCPS
+  //@NonCPS
   @Restricted(NoExternalUse.class)
   public static boolean resourceExists(@NonNull String resourceName) {
     return ResourcesManager.getResource(resourceName) != null;

@@ -3,6 +3,7 @@
         "accmod",
         "findbugs",
         "Gitter",
+        "instanceof",
         "kohsuke",
         "lockableresources"
     ]
