@@ -56,7 +56,7 @@ class ResourcesManager {
 
   //---------------------------------------------------------------------------
   @Restricted(NoExternalUse.class)
-  public static List<LockableResource> getAllResource() {
+  public static List<LockableResource> getAllResources() {
     return LRM.get().getResources();
   }
 

@@ -2,18 +2,22 @@
 
 
 import edu.umd.cs.findbugs.annotations.NonNull;
+import io.jenkins.library.lockableresources.Resource;
 import io.jenkins.library.lockableresources.ResourcesManager;
 
 //-----------------------------------------------------------------------------
-void call(@NonNull String resourceName) {
+void call(@NonNull String resourceName, @NonNull def closure) {
   lockResource(resourceName, [:]);
 }
 
 //-----------------------------------------------------------------------------
-void call(@NonNull String resourceName, @NonNull Map opts) {
-  
-  if (opts.createOnDemand && ResourcesManager.) {
+// createOnDemand: create resource when does not exists
+void call(@NonNull String resourceName, @NonNull Map opts, @NonNull def closure) {
 
+  if (opts.createOnDemand && !ResourcesManager.resourceExists()) {
+    Resource resource = new Resource(resourceName);
+    resource.create();
+    opts = null;
   }
-  lockResource(resourceName, [:]);
+  lockableResource._lock(resourceName, opts);
 }

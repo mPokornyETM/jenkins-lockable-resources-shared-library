@@ -53,13 +53,28 @@ boolean isFree(@NonNull String resourceName) {
 
 //------------------------------------------------------------------------------
 @NonCPS
-void _lock(Resource resource, closure) {
-  _lock(resource.getName(), closure);
+void _lock(@NonNull Resource resource, @NonNull Map opts, @NonNull def closure) {
+  if (opts.beforeLock != null) {
+    opts.beforeLock();
+  }
+  echo("Try to lock resource: $resource.name");
+  lock(resource.getName()) {
+    if (opts.onLock != null) {
+      opts.onLock();
+    }
+    closure();
+    if (opts.beforeRelease != null) {
+      opts.beforeRelease();
+    }
+  }
+  if (opts.afterRelease != null) {
+    opts.afterRelease();
+  }
 }
 
-void _lock(String resourceName, closure) {
-  lock(resourceName) {
-    closure();
-  }
+//------------------------------------------------------------------------------
+@NonCPS
+void _lock(@NonNull String resourceName, @NonNull Map opts, @NonNull def closure) {
+  _lock(new Resource(resourceName), opts, closure);
 }
 

@@ -31,11 +31,17 @@ class Resource {
   @NonCPS
   @Synchronized
   public synchronized void create() {
-    if (LRM.resourceExists(this.name)) {
+    if (this.exists()) {
       throw new Exception();
     }
-    LRM.createResource().add(this.resource);
+    LRM.getAllResources().add(this.resource);
     LRM.save();
+  }
+
+  //----------------------------------------------------------------------------
+  @NonCPS
+  public boolean exists() {
+    return LRM.resourceExists(this.name);
   }
 
   //----------------------------------------------------------------------------
