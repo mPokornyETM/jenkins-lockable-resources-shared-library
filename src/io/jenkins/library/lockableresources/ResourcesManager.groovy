@@ -55,18 +55,21 @@ class ResourcesManager {
   }
 
   //---------------------------------------------------------------------------
+  @NonCPS
   @Restricted(NoExternalUse.class)
   public static List<LockableResource> getAllResources() {
     return LRM.get().getResources();
   }
 
   //---------------------------------------------------------------------------
+  @NonCPS
   @Restricted(NoExternalUse.class)
   public static void save() {
     LRM.get().save();
   }
 
   //---------------------------------------------------------------------------
+  @NonCPS
   @Restricted(NoExternalUse.class)
   public static boolean resourceExists(@NonNull String resourceName) {
     return ResourcesManager.getResource(resourceName) != null;
