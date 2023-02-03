@@ -16,7 +16,7 @@ class Resource {
     NonCPS because the LockableResource is not serializable.
   */
   public Resource(@NonNull String resourceName) {
-    this.resource = LRM.get(resourceName);
+    this.resource = LRM.getResource(resourceName);
     if (this.resource == null) {
       this.resource = new LockableResource(resourceName);
     }
