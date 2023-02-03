@@ -17,7 +17,6 @@ void call(@NonNull String resourceName, @NonNull Map opts, @NonNull Closure clos
   Resource resource = new Resource(resourceName);
 
   if (opts.createOnDemand && !ResourcesManager.resourceExists()) {
-    
     resource.create();
     opts = null;
   }

@@ -32,7 +32,7 @@ class Resource {
   @Synchronized
   public synchronized void create() {
     if (this.exists()) {
-      throw new Exception();
+      throw new Exception("Resource $this.name currently exists");
     }
     LRM.getAllResources().add(this.resource);
     LRM.save();
