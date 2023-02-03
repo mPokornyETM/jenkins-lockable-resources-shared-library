@@ -16,7 +16,7 @@ void call(@NonNull String resourceName, @NonNull Closure closure) {
 void call(@NonNull String resourceName, @NonNull Map opts, @NonNull Closure closure) {
   Resource resource = new Resource(resourceName);
 
-  if (opts.createOnDemand && !ResourcesManager.resourceExists()) {
+  if (opts.createOnDemand && !ResourcesManager.resourceExists(resourceName)) {
     resource.create();
     opts = null;
   }
