@@ -32,7 +32,7 @@ class Resource implements Serializable {
   }
 
   //----------------------------------------------------------------------------
-  //@NonCPS
+  @NonCPS
   //@Synchronized
   public void create(Map properties = null) {
     if (this.exists()) {
@@ -49,63 +49,63 @@ class Resource implements Serializable {
   }
 
   //----------------------------------------------------------------------------
-  //@NonCPS
+  @NonCPS
   public boolean exists() {
     return LRM.resourceExists(this.name);
   }
 
   //----------------------------------------------------------------------------
-  //@NonCPS
+  @NonCPS
   public boolean isFree() {
     return (!this.resource.isLocked() && !this.resource.isReserved() && !this.resource.isQueued());
   }
 
   //----------------------------------------------------------------------------
-  //@NonCPS
+  @NonCPS
   public String getName() {
     return this.resource.name;
   }
 
   //----------------------------------------------------------------------------
-  //@NonCPS
+  @NonCPS
   public String toString() {
     return this.getName();
   }
 
   //----------------------------------------------------------------------------
-  //@NonCPS
+  @NonCPS
   public String getDescription() {
     return this.resource.description;
   }
 
   //----------------------------------------------------------------------------
-  //@NonCPS
+  @NonCPS
   public void setDescription(String description) {
     this.resource.setDescription(description);
     LRM.save();
   }
 
   //----------------------------------------------------------------------------
-  //@NonCPS
+  @NonCPS
   public String getNote() {
     return this.resource.note;
   }
 
   //----------------------------------------------------------------------------
-  //@NonCPS
+  @NonCPS
   public void setNote(String note) {
     this.resource.setNote(note);
     LRM.save();
   }
 
   //----------------------------------------------------------------------------
-  //@NonCPS
+  @NonCPS
   public boolean isEphemeral() {
     return this.resource.ephemeral;
   }
 
   //----------------------------------------------------------------------------
-  //@NonCPS
+  @NonCPS
   public static List<Resource> toSafeList(@NonNull List<LockableResource> list) {
     List<Resource> ret = [];
     for(LockableResource r : list) {
