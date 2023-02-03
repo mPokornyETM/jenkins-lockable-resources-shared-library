@@ -3,6 +3,7 @@ package io.jenkins.library.lockableresources;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.NonNull;
+import java.io.Serializable;
 import io.jenkins.library.lockableresources.Resource;
 import org.jenkins.plugins.lockableresources.LockableResourcesManager as LRM;
 import org.jenkins.plugins.lockableresources.LockableResource;
@@ -10,7 +11,7 @@ import org.kohsuke.accmod.Restricted;
 import org.kohsuke.accmod.restrictions.NoExternalUse;
 
 // !!!!! do not use outside this library !!!!
-class ResourcesManager {
+class ResourcesManager  implements Serializable {
 
   //---------------------------------------------------------------------------
   /** Returns {@code LockableResource} resource.
