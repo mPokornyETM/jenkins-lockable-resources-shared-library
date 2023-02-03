@@ -12,7 +12,7 @@ void call(@NonNull String resourceName, @NonNull Closure closure) {
 
 //-----------------------------------------------------------------------------
 // createOnDemand: create resource when does not exists
-@NonCPS
+// @NonCPS
 void call(@NonNull String resourceName, @NonNull Map opts, @NonNull Closure closure) {
   Resource resource = new Resource(resourceName);
 
@@ -24,7 +24,7 @@ void call(@NonNull String resourceName, @NonNull Map opts, @NonNull Closure clos
 }
 
 //------------------------------------------------------------------------------
-@NonCPS
+// @NonCPS
 void _lock(@NonNull Resource resource, @NonNull Map opts, @NonNull Closure closure) {
   if (opts.beforeLock != null) {
     opts.beforeLock();
@@ -45,7 +45,7 @@ void _lock(@NonNull Resource resource, @NonNull Map opts, @NonNull Closure closu
 }
 
 //------------------------------------------------------------------------------
-@NonCPS
+// @NonCPS
 void _lock(@NonNull String resourceName, @NonNull Map opts, @NonNull Closure closure) {
   _lock(new Resource(resourceName), opts, closure);
 }
