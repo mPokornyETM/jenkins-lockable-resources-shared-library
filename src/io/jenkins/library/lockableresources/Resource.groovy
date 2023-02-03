@@ -2,7 +2,7 @@
 package io.jenkins.library.lockableresources;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
-import groovy.transform.Synchronized;
+// import groovy.transform.Synchronized;
 import io.jenkins.library.lockableresources.ResourcesManager as LRM;
 import org.jenkins.plugins.lockableresources.LockableResource;
 
@@ -29,8 +29,8 @@ class Resource {
 
   //----------------------------------------------------------------------------
   //@NonCPS
-  @Synchronized
-  public synchronized void create(Map properties = null) {
+  //@Synchronized
+  public void create(Map properties = null) {
     if (this.exists()) {
       throw new Exception('Resource ' + $this.name + ' currently exists!' + 
                           'Therefore can not be created.');
