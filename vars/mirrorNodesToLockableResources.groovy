@@ -83,6 +83,7 @@ void mirrorNodeToLockableResource(Computer computer, Map opts) {
   Map properties = nodeToResourceProperties(computer);
   if (opts.nodeToResourceProperties != null) {
     opts.nodeToResourceProperties(computer, properties);
+  }
 
   Resource resource = new Resource(properties.name ? properties.name : computer.name);
   if (!resource.exists()) {
