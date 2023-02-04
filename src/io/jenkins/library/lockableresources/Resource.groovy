@@ -182,7 +182,7 @@ class Resource implements Serializable {
         labelsString += label.name + ' ';
       }
     } else {
-      throw(new Exception("Unsupported labels conversion"));
+      throw(new Exception("Unsupported labels conversion: " + labels.class.name + " " + labels));
     }
 
     return labelsString.trim(); 
