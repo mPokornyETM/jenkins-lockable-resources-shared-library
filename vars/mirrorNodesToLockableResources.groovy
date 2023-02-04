@@ -59,7 +59,7 @@ void call(@NonNull Map opts) {
       if (resource.isFree()) {
         resource.removeLabel(nodeLabel);
       } else {
-        echo('The node ' + nodeLabel.getName() + ' is not free, therefore the label can not be removed');
+        echo('The resource ' + resource.getName() + ' is not free, therefore the label ' + nodeLabel.getName() + ' can not be removed');
       }
       resource.save();
     }
