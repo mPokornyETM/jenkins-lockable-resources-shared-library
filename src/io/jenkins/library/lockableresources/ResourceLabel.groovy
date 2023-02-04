@@ -21,6 +21,7 @@ class ResourceLabel implements Serializable {
   }
 
   //---------------------------------------------------------------------------
+  @NonCPS
   public String getName() {
     return this.name;
   }
