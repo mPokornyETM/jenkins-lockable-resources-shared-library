@@ -62,7 +62,7 @@ class ResourcesManager  implements Serializable {
   @Restricted(NoExternalUse.class)
   public static List<LockableResource> getResources(ResourceLabel resourceLabel, Map opts = [:]) {
     List<LockableResource> matches = LRM.get().getResourcesWithLabel(resourceLabel.name, [:]);
-    return filter(matches);
+    return filter(matches, opts);
   }
 
   //---------------------------------------------------------------------------
@@ -76,7 +76,7 @@ class ResourcesManager  implements Serializable {
         matches.push(resource);
       }
     }
-    return filter(matches);
+    return filter(matches, opts);
   }
 
   //---------------------------------------------------------------------------
