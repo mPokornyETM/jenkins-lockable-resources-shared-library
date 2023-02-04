@@ -12,6 +12,7 @@ import jenkins.model.Jenkins;
 import io.jenkins.library.lockableresources.Resource;
 import io.jenkins.library.lockableresources.ResourceLabel;
 
+import hudson.model.Label;
 
 //-----------------------------------------------------------------------------
 void call(@NonNull String  nodeName) {
@@ -40,6 +41,7 @@ void call(@NonNull Map opts) {
 
 echo 'getLabels ' + Jenkins.get().getLabels();
 echo 'getLabelAtoms ' + Jenkins.get().getLabelAtoms();
+echo 'parseExpression ' + Label.parseExpression('os:Windows && LabelA');
   // synchronized over all jobs
   lock('mirrorNodes') {
     // mirror existing nodes
