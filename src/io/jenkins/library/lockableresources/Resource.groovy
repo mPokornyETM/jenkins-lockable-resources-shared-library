@@ -44,7 +44,6 @@ class Resource implements Serializable {
       this.fromMap(properties);
     }
     LRM.getAllResources().add(this.resource);
-    this.save();
   }
 
   //----------------------------------------------------------------------------
@@ -87,7 +86,6 @@ class Resource implements Serializable {
   @NonCPS
   public void setDescription(String description) {
     this.resource.setDescription(description);
-    this.save();
   }
 
   //----------------------------------------------------------------------------
@@ -100,7 +98,6 @@ class Resource implements Serializable {
   @NonCPS
   public void setNote(String note) {
     this.resource.setNote(note);
-    this.save();
   }
 
   //----------------------------------------------------------------------------
@@ -127,10 +124,27 @@ class Resource implements Serializable {
       if (labelsAsString != "") {
         labelsAsString += " ";
       }
-      labelsAsString += label.toString();
+      labelsAsString += label.getName();
     }
     this.resource.setLabels(labelsAsString);
-    this.save();
+  }
+
+  //----------------------------------------------------------------------------
+  @NonCPS
+  public void addLabel(@NonNull ResourceLabel label) {
+    if (this.resource.hasLabel(label.getName())) {
+      return;
+    }
+    this.setLabels(this.resource.getLabelsAsList() + label.getName());
+  }
+
+  //----------------------------------------------------------------------------
+  @NonCPS
+  public void removeLabel(@NonNull ResourceLabel label) {
+    if (!this.resource.hasLabel(label.getName())) {
+      return;
+    }
+    this.setLabels(this.resource.getLabelsAsList() - label.getName());
   }
 
   //----------------------------------------------------------------------------

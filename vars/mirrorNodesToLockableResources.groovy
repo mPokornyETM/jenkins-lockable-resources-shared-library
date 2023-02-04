@@ -22,14 +22,39 @@ void call(@NonNull String  nodeName, @NonNull Map opts) {
   mirrorNodeToLockableResource(nodeName, opts);
 }
 
+//-----------------------------------------------------------------------------
 void call() {
   mirrorNodesToLockableResources([:]);
 }
 
+//-----------------------------------------------------------------------------
+/** 
+ Currently are nodes only added or updated, but not removed. There is good reason.
+ We want to destroy your instance.
+ Maybe when we add enabled option in the 'LockableResource', we can disable it.
+ Also is the question what shall happens, when is currently locked and node does not
+ exists?
+*/
 void call(@NonNull Map opts) {
+  List<String> mirrored = [];
   jenkins.model.Jenkins.instance.computers.each { c ->
-    mirrorNodeToLockableResource(c, opts);
+    String resourceName = mirrorNodeToLockableResource(c, opts);
+    if (resourceName != null) {
+      mirrored.push(resourceName);
+    }
   }
+
+  for(Resource resource : lockableResource.find(new ResourceLabel(ResourceLabel.NODE_LABEL))) {
+    if (mirrored.contains(resource.getName())) {
+      return;
+    }
+    resource.setNote('This resource is not a ' + ResourceLabel.NODE_LABEL + '\n' + resource.getNote());
+    if (resource.isFree()) {
+      resource.removeLabel(ResourceLabel.NODE_LABEL);
+    }
+    resource.save();
+  }
+  
 }
 
 //-----------------------------------------------------------------------------
@@ -71,7 +96,7 @@ Map nodeToResourceProperties(Computer computer) {
   
   return [
     'description' : computer.getDescription(),
-    'labels' : 'node ' + computer.node.labelString,
+    'labels' : ResourceLabel.NODE_LABEL + ' ' + computer.node.labelString,
     'note' : note,
     'name' : nodeName
   ];
@@ -79,19 +104,19 @@ Map nodeToResourceProperties(Computer computer) {
 
 //-----------------------------------------------------------------------------
 @NonCPS
-void mirrorNodeToLockableResource(@NonNull String nodeName, @NonNull Map opts) {
+String  mirrorNodeToLockableResource(@NonNull String nodeName, @NonNull Map opts) {
   Computer computer = jenkins.model.Jenkins.instance.getComputer(nodeName);
   if (computer == null) {
     return; // this node does not exists
   }
-  mirrorNodeToLockableResource(computer, opts);
+  return mirrorNodeToLockableResource(computer, opts);
 }
 
 //-----------------------------------------------------------------------------
 @NonCPS
-void mirrorNodeToLockableResource(@NonNull Computer computer, @NonNull Map opts) {
+String mirrorNodeToLockableResource(@NonNull Computer computer, @NonNull Map opts) {
   if (computer == null) {
-    return; // this node does not exists
+    return null; // this node does not exists
   }
 
   Map properties = nodeToResourceProperties(computer);
@@ -107,4 +132,6 @@ echo "properties $computer.name " + properties;
     resource.fromMap(properties);
     resource.save();
   }
+
+  return resource.getName();
 }
