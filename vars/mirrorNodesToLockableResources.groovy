@@ -87,7 +87,7 @@ Map nodeToResourceProperties(Computer computer) {
     note += 'Mirrored from [' + nodeName + '](' + url + ')' + '\n';
     note += '\n';
     note += 'Last update at ' + format.format(new Date());
-  } else if (formatter != null && formatter.class.name.toLowerCase().contains('html')) {
+  } else if (formatter != null && (formatter.class.name.toLowerCase().contains('html') || formatter.class.name.toLowerCase().contains('UnsafeMarkupFormatter'))) {
     // html formatter
     note += '<pre>'
     note += '<p>Mirrored from '
