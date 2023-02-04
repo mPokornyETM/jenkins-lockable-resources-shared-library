@@ -10,6 +10,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import jenkins.model.Jenkins;
 import io.jenkins.library.lockableresources.Resource;
+import io.jenkins.library.lockableresources.ResourceLabel;
 
 
 //-----------------------------------------------------------------------------
@@ -44,13 +45,14 @@ void call(@NonNull Map opts) {
     }
   }
 
-  for(Resource resource : lockableResource.find(new ResourceLabel(ResourceLabel.NODE_LABEL))) {
+  final ResourceLabel nodeLabel = new ResourceLabel(ResourceLabel.NODE_LABEL);
+  for(Resource resource : lockableResource.find(nodeLabel)) {
     if (mirrored.contains(resource.getName())) {
       return;
     }
-    resource.setNote('This resource is not a ' + ResourceLabel.NODE_LABEL + '\n' + resource.getNote());
+    resource.setNote('This resource is not a ' + nodeLabel.getName() + '\n' + resource.getNote());
     if (resource.isFree()) {
-      resource.removeLabel(ResourceLabel.NODE_LABEL);
+      resource.removeLabel(nodeLabel);
     }
     resource.save();
   }
