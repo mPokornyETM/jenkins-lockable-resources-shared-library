@@ -109,7 +109,7 @@ class Resource implements Serializable {
   //----------------------------------------------------------------------------
   @NonCPS
   public List<ResourceLabel> getLabels() {
-    List<ResourceLabel> list;
+    List<ResourceLabel> list = [];
     for(String label : this.resource.labelsAsList) {
       list.push(new ResourceLabel(label));
     }
