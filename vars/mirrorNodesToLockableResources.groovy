@@ -84,6 +84,7 @@ Map nodeToResourceProperties(Computer computer) {
   if (formatter != null && formatter.class.name.toLowerCase().contains('markdown')) {
     // markdown formatter (like https://github.com/jenkinsci/markdown-formatter-plugin)
     note += 'Mirrored from [' + nodeName + '](' + url + ')' + '\n';
+    note += '\n';
     note += 'Last update at ' + format.format(new Date());
   } else if (formatter != null && formatter.class.name.toLowerCase().contains('html')) {
     // html formatter
