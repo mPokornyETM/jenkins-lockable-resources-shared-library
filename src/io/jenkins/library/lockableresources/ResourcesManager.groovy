@@ -4,7 +4,9 @@ package io.jenkins.library.lockableresources;
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import java.io.Serializable;
+import java.util.Collections;
 import io.jenkins.library.lockableresources.Resource;
+import io.jenkins.library.lockableresources.ResourceLabel;
 import org.jenkins.plugins.lockableresources.LockableResourcesManager as LRM;
 import org.jenkins.plugins.lockableresources.LockableResource;
 import org.kohsuke.accmod.Restricted;
@@ -20,6 +22,7 @@ class ResourcesManager  implements Serializable {
   */
   @NonCPS
   @Restricted(NoExternalUse.class)
+  @CheckForNull
   public static LockableResource getResource(@NonNull String resourceName) {
     return LRM.get().fromName(resourceName);
   }
@@ -46,13 +49,34 @@ class ResourcesManager  implements Serializable {
   */
   @NonCPS
   @Restricted(NoExternalUse.class)
-  @CheckForNull
   public static List<LockableResource> getResources(@NonNull List<String> resourceNames) {
     List<LockableResource> retList = [];
     for (String resourceName : resourceNames) {
       retList.push(ResourcesManager.getResourceOrDie(resourceName));
     }
     return retList;
+  }
+
+  //---------------------------------------------------------------------------
+  @NonCPS
+  @Restricted(NoExternalUse.class)
+  public static List<LockableResource> getResources(ResourceLabel resourceLabel, Map opts = [:]) {
+    List<LockableResource> matches = LRM.get().getResourcesWithLabel(resourceLabel.name, [:]);
+    return filter(matches);
+  }
+
+  //---------------------------------------------------------------------------
+  @NonCPS
+  @Restricted(NoExternalUse.class)
+  public static List<LockableResource> getResources(Closure closure, Map opts = [:]) {
+    List<LockableResource> matches = [];
+    for(LockableResource resource : getAllResources()) {
+      boolean match = closure(new Resource(resource));
+      if (match) {
+        matches.push(resource);
+      }
+    }
+    return filter(matches);
   }
 
   //---------------------------------------------------------------------------
@@ -74,5 +98,61 @@ class ResourcesManager  implements Serializable {
   @Restricted(NoExternalUse.class)
   public static boolean resourceExists(@NonNull String resourceName) {
     return ResourcesManager.getResource(resourceName) != null;
+  }
+
+  
+  //---------------------------------------------------------------------------
+  @NonCPS
+  private static List<LockableResource> filter(List<LockableResource> allMatches, Map opts) {
+    if (opts == null) {
+      opts = [:];
+    }
+
+    final int expectedCount = opts.expectedCount != null ? opts.expectedCount : 0;
+    final int minCount = opts.minCount != null ? opts.minCount : expectedCount;
+
+    if (expectedCount == 0) {
+      return allMatches;
+    }
+
+    if (expectedCount < allMatches.size()) {
+      throw(new Exception("You has expected $expectedCount, but there are currently only $allMatches.size"));
+    }
+
+    if (opts.randomize != null) {
+      Collections.shuffle(allMatches);
+    }
+
+    if (opts.orderBy != null) {
+      allMatches = sort(allMatches, opts.orderBy);
+    }
+    
+    List<LockableResource> retList = [];
+    for(int i = 0; i < expectedCount) {
+      retList.push(allMatches[i]);
+    }
+
+    return retList;
+  }
+
+  //---------------------------------------------------------------------------
+  @NonCPS
+  private static void sort(List<LockableResource> resources, def orderBy) {
+    // get current state and property of resources to eliminate
+    // java.lang.IllegalArgumentException: Comparison method violates its general contract!
+    // otherwise nobody can grant, that the resource state/property has been not changed
+    List<Map> list = [];
+
+    for (LockableResource resource : resources) {
+      list.push(new Resource(resource).toMap());
+    }
+
+    def orderByDef = new OrderBy(orderBy);
+    list.sort(orderByDef);
+
+    resources = [];
+    for (Map map : list) {
+      resources.add(new LockableResource(map.name));
+    }
   }
 }

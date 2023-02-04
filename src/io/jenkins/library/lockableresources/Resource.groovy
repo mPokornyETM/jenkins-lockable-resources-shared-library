@@ -5,6 +5,7 @@ import edu.umd.cs.findbugs.annotations.NonNull;
 import java.io.Serializable;
 // import groovy.transform.Synchronized;
 import io.jenkins.library.lockableresources.ResourcesManager as LRM;
+import io.jenkins.library.lockableresources.ResourceLabel;
 import org.jenkins.plugins.lockableresources.LockableResource;
 
 // NonCPS: since LockableResource contains transient variables, they cannot be correctly serialized
@@ -40,11 +41,15 @@ class Resource implements Serializable {
                           'Therefore can not be created.');
     }
     if (properties != null) {
-      this.resource.description = description;
-      this.resource.labels = labels;
-      this.resource.note = note;
+      this.fromMap(properties);
     }
     LRM.getAllResources().add(this.resource);
+    this.save();
+  }
+
+  //----------------------------------------------------------------------------
+  @NonCPS
+  public void save() {
     LRM.save();
   }
 
@@ -82,7 +87,7 @@ class Resource implements Serializable {
   @NonCPS
   public void setDescription(String description) {
     this.resource.setDescription(description);
-    LRM.save();
+    this.save();
   }
 
   //----------------------------------------------------------------------------
@@ -95,13 +100,85 @@ class Resource implements Serializable {
   @NonCPS
   public void setNote(String note) {
     this.resource.setNote(note);
-    LRM.save();
+    this.save();
   }
 
   //----------------------------------------------------------------------------
   @NonCPS
   public boolean isEphemeral() {
     return this.resource.ephemeral;
+  }
+
+  //----------------------------------------------------------------------------
+  @NonCPS
+  public List<ResourceLabel> getLabels() {
+    List<ResourceLabel> list;
+    for(String label : this.resource.labelsAsList) {
+      list.push(new ResourceLabel(label));
+    }
+    return list;
+  }
+
+  //----------------------------------------------------------------------------
+  @NonCPS
+  public void setLabels(@NonNull List<ResourceLabel> labels) {
+    String labelsAsString = "";
+    for(ResourceLabel label : labels) {
+      if (labelsAsString != "") {
+        labelsAsString += " ";
+      }
+      labelsAsString += label.toString();
+    }
+    this.resource.setLabels(labelsAsString);
+    this.save();
+  }
+
+  //----------------------------------------------------------------------------
+  @NonCPS
+  public Map toMap() {
+    return [
+      'name' : this.name,
+      'description' : this.description,
+      'note' : this.note,
+      'labels' : this.labels,
+      'isFree' : this.isFree(),
+      'reservedTimestamp' : this.resource.getReservedTimestamp(),
+      'isLocked' : this.resource.isLocked(),
+      'lockedBy' : this.resource.getBuildName(),
+      'isReserved' : this.resource.isReserved(),
+      'reservedBy' : this.resource.getReservedBy(),
+      'isStolen' : this.resource.isStolen(),
+      'isQueued' : this.resource.isQueued()
+    ];
+  }
+
+  //----------------------------------------------------------------------------
+  @NonCPS
+  public Map fromMap(@NonNull Map map) {
+    this.resource.description = map.description;
+    this.resource.note = map.note;
+    this.resource.labels = toLabelsString(map.labels=;
+  }
+
+  //----------------------------------------------------------------------------
+  @NonCPS
+  private static String toLabelsString(def labels) {
+    String labelsString = "";
+    if (labels == null) {
+      return labelsString;
+    } else if (labels instanceof String) {
+      labelsString = labels;
+    } else if (labels instanceof List<String>) {
+      labelsString = labels.join(' ');
+    } else if (labels instanceof List<ResourceLabel>) {
+      for (ResourceLabel label : labels) {
+        labelsString += label.toString() + ' ';
+      }
+    } else {
+      throw(new Exception("Unsupported labels conversion"));
+    }
+
+    return labelsString.trim(); 
   }
 
   //----------------------------------------------------------------------------
