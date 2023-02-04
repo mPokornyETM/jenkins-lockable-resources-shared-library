@@ -39,7 +39,6 @@ void _lock(@NonNull Resource resource, @NonNull Map opts, @NonNull Closure closu
     if (opts.beforeLock != null) {
       opts.beforeLock(resource);
     }
-    echo("Try to lock resource: $resource.name");
     lock(resource.getName()) {
       _insideLock(resource, opts, closure);
     }
