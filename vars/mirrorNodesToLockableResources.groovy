@@ -36,9 +36,11 @@ void call(@NonNull Map opts) {
 @NonCPS
 @CheckForNull
 Map nodeToResourceProperties(Computer computer) {
-  if (computer == null) {
+  if (computer == null || computer.node == null) {
     return null; // this node does not exists
   }
+
+  final String nodeName = computer.node.selfLabel;
 
   final DateFormat format = SimpleDateFormat.getDateTimeInstance(MEDIUM, SHORT);
   final String url = Jenkins.get().getRootUrl() + computer.getUrl();
@@ -46,7 +48,7 @@ Map nodeToResourceProperties(Computer computer) {
   def formatter = Jenkins.get().getMarkupFormatter();
   if (formatter != null && formatter.class.name.toLowerCase().contains('markdown')) {
     // markdown formatter (like https://github.com/jenkinsci/markdown-formatter-plugin)
-    note += '[' + computer.getName() + '](' + url + ')' + '\n';
+    note += '[' + nodeName + '](' + url + ')' + '\n';
     note += '\n';
     note += 'Last update at ' + format.format(new Date());
   } else if (formatter != null && formatter.class.name.toLowerCase().contains('html')) {
@@ -55,7 +57,7 @@ Map nodeToResourceProperties(Computer computer) {
     note += '<a';
     note += '  class="jenkins-table__link model-link"';
     note += '  href="' + url + '"';
-    note += '  >' + computer.getName() + '<button';
+    note += '  >' + nodeName + '<button';
     note += '    class="jenkins-menu-dropdown-chevron"';
     note += '  ></button';
     note += '></a>';
@@ -70,7 +72,8 @@ Map nodeToResourceProperties(Computer computer) {
   return [
     'description' : computer.getDescription(),
     'labels' : computer.node.labelString + ' node',
-    'note' : note
+    'note' : note,
+    'name' : nodeName
   ];
 }
 
