@@ -41,7 +41,7 @@ class Resource implements Serializable {
                           'Therefore can not be created.');
     }
     if (properties != null) {
-      echo "create $name " + properties
+      println "create $name " + properties
       this.fromMap(properties);
     }
     LRM.getAllResources().add(this.resource);

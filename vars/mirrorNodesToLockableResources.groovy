@@ -71,7 +71,7 @@ Map nodeToResourceProperties(Computer computer) {
   
   return [
     'description' : computer.getDescription(),
-    'labels' : computer.node.labelString + ' node',
+    'labels' : 'node ' + computer.node.labelString,
     'note' : note,
     'name' : nodeName
   ];
