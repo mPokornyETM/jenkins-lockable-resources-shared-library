@@ -139,6 +139,7 @@ class Resource implements Serializable {
     // }
     List<ResourceLabel> labels = this.getLabels();
     labels.remove(label);
+    echo 'labels ' + labels
     this.setLabels(labels);
   }
 
