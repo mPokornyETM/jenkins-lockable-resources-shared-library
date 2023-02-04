@@ -157,7 +157,7 @@ class Resource implements Serializable {
   public Map fromMap(@NonNull Map map) {
     this.resource.description = map.description;
     this.resource.note = map.note;
-    this.resource.labels = toLabelsString(map.labels);
+    this.resource.labels = Resource.toLabelsString(map.labels);
   }
 
   //----------------------------------------------------------------------------
@@ -172,7 +172,7 @@ class Resource implements Serializable {
       labelsString = labels.join(' ');
     } else if (labels instanceof List<ResourceLabel>) {
       for (ResourceLabel label : labels) {
-        labelsString += label.toString() + ' ';
+        labelsString += label.name + ' ';
       }
     } else {
       throw(new Exception("Unsupported labels conversion"));
