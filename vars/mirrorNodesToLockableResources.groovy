@@ -13,12 +13,12 @@ import io.jenkins.library.lockableresources.Resource;
 
 
 //-----------------------------------------------------------------------------
-void call(@NonNull String String nodeName) {
+void call(@NonNull String  nodeName) {
   mirrorNodeToLockableResource(nodeName, [:]);
 }
 
 //-----------------------------------------------------------------------------
-void call(@NonNull String String nodeName, @NonNull String Map opts) {
+void call(@NonNull String  nodeName, @NonNull String Map opts) {
   mirrorNodeToLockableResource(nodeName, opts);
 }
 
@@ -76,7 +76,7 @@ Map nodeToResourceProperties(Computer computer) {
 
 //-----------------------------------------------------------------------------
 @NonCPS
-void mirrorNodeToLockableResource(@NonNull String String nodeName, @NonNull String Map opts) {
+void mirrorNodeToLockableResource(@NonNull String  nodeName, @NonNull String Map opts) {
   Computer computer = jenkins.model.Jenkins.instance.getComputer(nodeName);
   if (computer == null) {
     return; // this node does not exists
