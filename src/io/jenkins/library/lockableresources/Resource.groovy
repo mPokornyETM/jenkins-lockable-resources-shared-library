@@ -155,9 +155,9 @@ class Resource implements Serializable {
   //----------------------------------------------------------------------------
   @NonCPS
   public Map fromMap(@NonNull Map map) {
-    this.resource.description = map.description;
-    this.resource.note = map.note;
-    this.resource.setLabels(map.labels); //Resource.toLabelsString(map.labels);
+    this.resource.setDescription(map.description);
+    this.resource.setNote(map.note);
+    this.resource.setLabels(Resource.toLabelsString(map.labels));
   }
 
   //----------------------------------------------------------------------------
