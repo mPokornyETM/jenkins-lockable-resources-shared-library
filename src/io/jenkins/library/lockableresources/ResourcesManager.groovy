@@ -128,7 +128,7 @@ class ResourcesManager  implements Serializable {
     }
     
     List<LockableResource> retList = [];
-    for(int i = 0; i < expectedCount) {
+    for(int i = 0; i < expectedCount; i++) {
       retList.push(allMatches[i]);
     }
 
