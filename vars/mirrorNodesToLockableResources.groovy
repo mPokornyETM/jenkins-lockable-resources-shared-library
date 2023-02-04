@@ -101,6 +101,7 @@ void mirrorNodeToLockableResource(@NonNull Computer computer, @NonNull Map opts)
 echo "properties $computer.name " + properties;
   Resource resource = new Resource(properties.name ? properties.name : computer.name);
   if (!resource.exists()) {
+    echo "crr properties $computer.name " + properties;
     resource.create(properties);
   } else {
     resource.fromMap(properties);
