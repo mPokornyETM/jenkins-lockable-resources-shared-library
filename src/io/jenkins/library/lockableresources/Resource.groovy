@@ -163,7 +163,7 @@ class Resource implements Serializable {
 
   //----------------------------------------------------------------------------
   @NonCPS
-  private static String toLabelsString(def labels) {
+  private static String toLabelsString(labels) {
     String labelsString = "";
     if (labels == null) {
       return labelsString;
