@@ -81,7 +81,6 @@ Map nodeToResourceProperties(Computer computer) {
   final String url = Jenkins.get().getRootUrl() + computer.getUrl();
   String note = '';
   def formatter = Jenkins.get().getMarkupFormatter();
-  echo('formatter ' + formatter.class.name)
   if (formatter != null && formatter.class.name.toLowerCase().contains('markdown')) {
     // markdown formatter (like https://github.com/jenkinsci/markdown-formatter-plugin)
     note += 'Mirrored from [' + nodeName + '](' + url + ')' + '\n';
