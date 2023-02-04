@@ -118,15 +118,8 @@ class Resource implements Serializable {
 
   //----------------------------------------------------------------------------
   @NonCPS
-  public void setLabels(@NonNull List<ResourceLabel> labels) {
-    String labelsAsString = "";
-    for(ResourceLabel label : labels) {
-      if (labelsAsString != "") {
-        labelsAsString += " ";
-      }
-      labelsAsString += label.getName();
-    }
-    this.resource.setLabels(labelsAsString);
+  public void setLabels(@NonNull def labels) {
+    this.resource.setLabels(Resource.toLabelsString(labels));
   }
 
   //----------------------------------------------------------------------------
@@ -144,7 +137,7 @@ class Resource implements Serializable {
     if (!this.resource.hasLabel(label.getName())) {
       return;
     }
-    this.setLabels(this.getLabels() - label);
+    this.setLabels(this.getLabels().remove(label));
   }
 
   //----------------------------------------------------------------------------
