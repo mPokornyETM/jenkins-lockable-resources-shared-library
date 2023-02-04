@@ -37,24 +37,30 @@ void call() {
  exists?
 */
 void call(@NonNull Map opts) {
-  List<String> mirrored = [];
-  jenkins.model.Jenkins.instance.computers.each { c ->
-    String resourceName = mirrorNodeToLockableResource(c, opts);
-    if (resourceName != null) {
-      mirrored.push(resourceName);
-    }
-  }
 
-  final ResourceLabel nodeLabel = new ResourceLabel(ResourceLabel.NODE_LABEL);
-  for(Resource resource : lockableResource.find(nodeLabel)) {
-    if (mirrored.contains(resource.getName())) {
-      return;
+  // synchronized over all jobs
+  lock('mirrorNodes') {
+    // mirror existing nodes
+    List<String> mirrored = [];
+    jenkins.model.Jenkins.instance.computers.each { c ->
+      String resourceName = mirrorNodeToLockableResource(c, opts);
+      if (resourceName != null) {
+        mirrored.push(resourceName);
+      }
     }
-    resource.setNote('This resource is not a ' + nodeLabel.getName() + '\n' + resource.getNote());
-    if (resource.isFree()) {
-      resource.removeLabel(nodeLabel);
+
+    // step all resources and check if the node has been removed 
+    final ResourceLabel nodeLabel = new ResourceLabel(ResourceLabel.NODE_LABEL);
+    for(Resource resource : lockableResource.find(nodeLabel)) {
+      if (mirrored.contains(resource.getName())) {
+        return;
+      }
+      resource.setNote('This resource is not a ' + nodeLabel.getName() + '\n' + resource.getNote());
+      if (resource.isFree()) {
+        resource.removeLabel(nodeLabel);
+      }
+      resource.save();
     }
-    resource.save();
   }
   
 }
