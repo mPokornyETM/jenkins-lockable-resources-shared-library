@@ -55,7 +55,7 @@ void call(@NonNull Map opts) {
       if (mirrored.contains(resource.getName())) {
         return;
       }
-      resource.setNote('This resource is not a ' + nodeLabel.getName() + '\n' + resource.getNote());
+      echo('The resource ' + resource.getName() + ' is not a ' + nodeLabel.getName());
       if (resource.isFree()) {
         resource.removeLabel(nodeLabel);
       } else {
