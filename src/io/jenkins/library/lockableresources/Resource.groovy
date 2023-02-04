@@ -134,9 +134,9 @@ class Resource implements Serializable {
   //----------------------------------------------------------------------------
   @NonCPS
   public void removeLabel(@NonNull ResourceLabel label) {
-    if (!this.resource.hasLabel(label.getName())) {
-      return;
-    }
+    // if (!this.resource.hasLabel(label.getName())) {
+    //   return;
+    // }
     List<ResourceLabel> labels = this.getLabels();
     labels.remove(label);
     this.setLabels(labels);
