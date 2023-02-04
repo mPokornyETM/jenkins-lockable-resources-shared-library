@@ -35,24 +35,24 @@ Map nodeToResourceProperties(Computer computer) {
   def formatter = jenkins.model.Jenkins.getMarkupFormatter();
   if (formatter != null && formatter.class.name.toLowerCase().contains('markdown')) {
     // markdown formatter (like https://github.com/jenkinsci/markdown-formatter-plugin)
-    note += '[' + computer.getName() + '](' + url + ')' + '\n' +
-    note += '\n' +
+    note += '[' + computer.getName() + '](' + url + ')' + '\n';
+    note += '\n';
     note += 'Last update at ' + format.format(new Date());
   } else if (formatter != null && formatter.class.name.toLowerCase().contains('html')) {
     // html formatter
     
-    note += '<a' +
-    note += '  class="jenkins-table__link model-link"' +
-    note += '  href="' + url + '"' +
-    note += '  >' + computer.getName() + '<button' +
-    note += '    class="jenkins-menu-dropdown-chevron"' +
-    note += '  ></button' +
-    note += '></a>' +
-    note += '<br>' +
+    note += '<a';
+    note += '  class="jenkins-table__link model-link"';
+    note += '  href="' + url + '"';
+    note += '  >' + computer.getName() + '<button';
+    note += '    class="jenkins-menu-dropdown-chevron"';
+    note += '  ></button';
+    note += '></a>';
+    note += '<br>';
     note += 'Last update at <strong>' + format.format(new Date()) + '</strong>';
   } else {
     // no formatter chosen (or not supported)
-    note += url + '\n' +
+    note += url + '\n';
     note += 'Last update at ' + format.format(new Date());
   }
   
