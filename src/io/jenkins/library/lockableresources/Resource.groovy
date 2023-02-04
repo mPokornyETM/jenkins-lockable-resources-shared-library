@@ -137,9 +137,10 @@ class Resource implements Serializable {
     // if (!this.resource.hasLabel(label.getName())) {
     //   return;
     // }
-    List<ResourceLabel> labels = this.getLabels();
-    labels.remove(label);
-    echo 'labels ' + labels
+    this.resource.labelsAsList.remove(label.getName());
+    // List<ResourceLabel> labels = this.getLabels();
+    // labels.remove(label);
+    echo 'labels ' + this.getLabels();
     this.setLabels(labels);
   }
 
