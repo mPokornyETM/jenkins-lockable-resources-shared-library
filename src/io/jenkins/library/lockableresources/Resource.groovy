@@ -137,7 +137,7 @@ class Resource implements Serializable {
     if (!this.resource.hasLabel(label.getName())) {
       return;
     }
-    this.setLabels(this.getLabels().remove(label));
+    this.setLabels(this.getLabels() - label);
   }
 
   //----------------------------------------------------------------------------
