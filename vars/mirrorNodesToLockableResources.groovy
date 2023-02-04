@@ -83,24 +83,25 @@ Map nodeToResourceProperties(Computer computer) {
   def formatter = Jenkins.get().getMarkupFormatter();
   if (formatter != null && formatter.class.name.toLowerCase().contains('markdown')) {
     // markdown formatter (like https://github.com/jenkinsci/markdown-formatter-plugin)
-    note += '[' + nodeName + '](' + url + ')' + '\n';
-    note += '\n';
+    note += 'Mirrored from [' + nodeName + '](' + url + ')' + '\n';
     note += 'Last update at ' + format.format(new Date());
   } else if (formatter != null && formatter.class.name.toLowerCase().contains('html')) {
     // html formatter
-    
+    note += '<pre>'
+    note += '<p>Mirrored from '
     note += '<a';
     note += '  class="jenkins-table__link model-link"';
     note += '  href="' + url + '"';
     note += '  >' + nodeName + '<button';
     note += '    class="jenkins-menu-dropdown-chevron"';
-    note += '  ></button';
-    note += '></a>';
-    note += '<br>';
-    note += 'Last update at <strong>' + format.format(new Date()) + '</strong>';
+    note += '  ></button>';
+    note += '</a>';
+    note += '</p>';
+    note += '<p>Last update at <strong>' + format.format(new Date()) + '</strong></p>';
+    note += '</pre>'
   } else {
     // no formatter chosen (or not supported)
-    note += url + '\n';
+    note += 'Mirrored from ' + url + '\n';
     note += 'Last update at ' + format.format(new Date());
   }
   
