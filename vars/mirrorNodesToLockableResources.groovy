@@ -4,18 +4,21 @@
 import static java.text.DateFormat.MEDIUM;
 import static java.text.DateFormat.SHORT;
 
+import edu.umd.cs.findbugs.annotations.NonNull;
+import edu.umd.cs.findbugs.annotations.CheckForNull;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import jenkins.model.Jenkins;
+import io.jenkins.library.lockableresources.Resource;
 
 
 //-----------------------------------------------------------------------------
-void call(String nodeName) {
+void call(@NonNull String String nodeName) {
   mirrorNodeToLockableResource(nodeName, [:]);
 }
 
 //-----------------------------------------------------------------------------
-void call(String nodeName, Map opts) {
+void call(@NonNull String String nodeName, @NonNull String Map opts) {
   mirrorNodeToLockableResource(nodeName, opts);
 }
 
@@ -23,7 +26,7 @@ void call() {
   mirrorNodesToLockableResources([:]);
 }
 
-void call(Map opts) {
+void call(@NonNull String Map opts) {
   jenkins.model.Jenkins.instance.computers.each { c ->
     mirrorNodeToLockableResource(c, opts);
   }
@@ -31,6 +34,7 @@ void call(Map opts) {
 
 //-----------------------------------------------------------------------------
 @NonCPS
+@CheckForNull
 Map nodeToResourceProperties(Computer computer) {
   if (computer == null) {
     return null; // this node does not exists
@@ -72,7 +76,7 @@ Map nodeToResourceProperties(Computer computer) {
 
 //-----------------------------------------------------------------------------
 @NonCPS
-void mirrorNodeToLockableResource(String nodeName, Map opts) {
+void mirrorNodeToLockableResource(@NonNull String String nodeName, @NonNull String Map opts) {
   Computer computer = jenkins.model.Jenkins.instance.getComputer(nodeName);
   if (computer == null) {
     return; // this node does not exists
@@ -82,7 +86,7 @@ void mirrorNodeToLockableResource(String nodeName, Map opts) {
 
 //-----------------------------------------------------------------------------
 @NonCPS
-void mirrorNodeToLockableResource(Computer computer, Map opts) {
+void mirrorNodeToLockableResource(@NonNull String Computer computer, @NonNull String Map opts) {
   if (computer == null) {
     return; // this node does not exists
   }

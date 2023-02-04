@@ -1,11 +1,10 @@
 #!groovy
 
+import edu.umd.cs.findbugs.annotations.NonNull;
+import edu.umd.cs.findbugs.annotations.CheckForNull;
 import io.jenkins.library.lockableresources.Resource;
 import io.jenkins.library.lockableresources.ResourceLabel;
 import io.jenkins.library.lockableresources.ResourcesManager as RM;
-
-import edu.umd.cs.findbugs.annotations.NonNull;
-import edu.umd.cs.findbugs.annotations.CheckForNull;
 
 //-----------------------------------------------------------------------------
 /** Returns {@code LockableResource} resource.
