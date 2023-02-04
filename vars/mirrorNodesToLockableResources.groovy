@@ -38,6 +38,8 @@ void call() {
 */
 void call(@NonNull Map opts) {
 
+echo 'getLabels ' + Jenkins.get().getLabels();
+echo 'getLabelAtoms ' + Jenkins.get().getLabelAtoms();
   // synchronized over all jobs
   lock('mirrorNodes') {
     // mirror existing nodes
