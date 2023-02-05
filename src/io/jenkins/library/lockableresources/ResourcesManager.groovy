@@ -73,14 +73,13 @@ class ResourcesManager  implements Serializable {
   public static List<LockableResource> getResources(Closure closure, Map opts = [:]) {
     opts = Utils.fixNullMap(opts);
     List<LockableResource> matches = [];
+
     for(LockableResource resource : getAllResources()) {
       boolean match = closure(new Resource(resource));
       if (match) {
         matches.push(resource);
       }
     }
-
-    Utils.echo('matches: ' + matches);
 
     return reOrder(matches, opts);
   }
@@ -112,8 +111,6 @@ class ResourcesManager  implements Serializable {
   private static List<LockableResource> reOrder(List<LockableResource> allMatches, Map opts) {
     opts = Utils.fixNullMap(opts);
 
-    Utils.echo('allMatches: ' + allMatches + ' opts: ' + opts);
-
     final int quantity = opts.quantity != null ? opts.quantity : 0;
     final int minCount = opts.minCount != null ? opts.minCount : quantity;
 
@@ -134,8 +131,6 @@ class ResourcesManager  implements Serializable {
 
     if (quantity == 0) {
       // return all possible resources
-
-      Utils.echo('return all: ' + allMatches);
       return allMatches;
     }
 
@@ -144,7 +139,6 @@ class ResourcesManager  implements Serializable {
       retList.push(allMatches[i]);
     }
 
-    Utils.echo("return $quantity: " + retList);
     return retList;
   }
 
