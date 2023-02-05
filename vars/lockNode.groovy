@@ -13,7 +13,7 @@ void call(String nodeName, Map opts, Closure closure) {
     opts = [:]
   }
   
-  mirrorNodeToLockableResource(opts.mirrorOptions);
+  mirrorNodeToLockableResource(nodeName, opts.mirrorOptions);
 
   lockResource(nodeName, opts) {
     inLockScope(nodeName, opts, closure);

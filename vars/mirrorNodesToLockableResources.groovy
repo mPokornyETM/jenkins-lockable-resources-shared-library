@@ -46,10 +46,12 @@ echo 'getLabelAtoms ' + Jenkins.get().getLabelAtoms();
 Label parsed = Label.parseExpression('os:Windows && LabelA');
 
 def comp = jenkins.model.Jenkins.instance.getComputer('someAgent');
-Collection<LabelAtom> atomLabels = comp.node.getAssignedLabels()
-    //   for(ResourceLabel resourceLabel : resource.getLabels()) {
-    //     atomLabels.push(new LabelAtom(resourceLabel.getName()));
-    //   }
+def res = new Resource('someAgent');
+Collection<LabelAtom> atomLabels =  [];
+comp.node.getAssignedLabels()
+      for(ResourceLabel resourceLabel : res.getLabels()) {
+        atomLabels.push(new LabelAtom(resourceLabel.getName()));
+      }
       echo ' do I match ? ';
       boolean matches = parsed.matches(atomLabels);
       echo matches ? 'YEA BABY' : 'NOPE :-('
