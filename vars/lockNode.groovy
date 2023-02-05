@@ -53,7 +53,7 @@ List<Resource> findNodesByLabel(String labelExpression, Map opts) {
 
 //-----------------------------------------------------------------------------
 void inLockScope(String nodeName, Map opts, Closure closure) {
-  echo("Lock acquired on node [$nodeName]");
+  
   if (opts.allocateExecutor) {
     opts.remove('allocateExecutor');
     echo("Trying to acquire executor on node [$nodeName]");
@@ -61,8 +61,11 @@ void inLockScope(String nodeName, Map opts, Closure closure) {
       echo("Executor acquired on node [$nodeName]");
       inLockScope(nodeName, opts);
     }
+    echo("Executor released on resource [$nodeName]");
     return;
   }
 
+  echo("Lock acquired on node [$nodeName]");
   closure();
+  echo("Lock released on node [$nodeName]");
 }
