@@ -77,7 +77,7 @@ void inLockScope(String nodeName, Map opts, Closure closure) {
     echo("Trying to acquire executor on node [$nodeName]");
     node(nodeName) {
       echo("Executor acquired on node [$nodeName]");
-      inLockScope(nodeName, opts);
+      inLockScope(nodeName, opts, closure);
     }
     echo("Executor released on resource [$nodeName]");
     return;
