@@ -64,7 +64,7 @@ class ResourcesManager  implements Serializable {
   public static List<LockableResource> getResources(ResourceLabel resourceLabel, Map opts = [:]) {
     opts = Utils.fixNullMap(opts);
     List<LockableResource> matches = LRM.get().getResourcesWithLabel(resourceLabel.name, [:]);
-    return filter(matches, opts);
+    return reOrder(matches, opts);
   }
 
   //---------------------------------------------------------------------------
@@ -82,7 +82,7 @@ class ResourcesManager  implements Serializable {
 
     Utils.echo('matches: ' + matches);
 
-    return filter(matches, opts);
+    return reOrder(matches, opts);
   }
 
   //---------------------------------------------------------------------------
@@ -109,7 +109,7 @@ class ResourcesManager  implements Serializable {
 
   //---------------------------------------------------------------------------
   @NonCPS
-  private static List<LockableResource> filter(List<LockableResource> allMatches, Map opts) {
+  private static List<LockableResource> reOrder(List<LockableResource> allMatches, Map opts) {
     opts = Utils.fixNullMap(opts);
 
     Utils.echo('allMatches: ' + allMatches + ' opts: ' + opts);
