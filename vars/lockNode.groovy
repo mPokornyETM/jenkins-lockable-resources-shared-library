@@ -15,9 +15,9 @@ void call(final String nodeName, Map opts, Closure closure) {
   }
   
   if (Jenkins.get().getNode(nodeName) != null) {
-    mirrorNodeToLockableResource(finalNodeName, opts.mirrorOptions);
-    lockResource(finalNodeName, opts) {
-      inLockScope(finalNodeName, opts, closure);
+    mirrorNodeToLockableResource(nodeName, opts.mirrorOptions);
+    lockResource(nodeName, opts) {
+      inLockScope(nodeName, opts, closure);
     }
   } else {
     // your node does not exists, we try to find it as label
@@ -27,12 +27,13 @@ void call(final String nodeName, Map opts, Closure closure) {
     }
     
     for(int i = 0; i < matched.size(); i++) {
+      nodeName = matched[i];
       if (i == (matched.size() -1)) {
-        lockResource(finalNodeName, opts) {
-          inLockScope(finalNodeName, opts, closure);
+        lockResource(nodeName, opts) {
+          inLockScope(nodeName, opts, closure);
         }
       } else {
-        lockResource(finalNodeName, opts) {}
+        lockResource(nodeName, opts) {}
       }
     }
   }
