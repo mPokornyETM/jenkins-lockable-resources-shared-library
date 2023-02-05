@@ -24,6 +24,7 @@ class ResourceLabel implements Serializable {
   //---------------------------------------------------------------------------
   //@NonCPS
   public String getName() {
+    throw new Exception('How?')
     return this.name;
   }
 }
