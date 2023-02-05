@@ -44,6 +44,12 @@ void _lock(@NonNull Resource resource, @NonNull Map opts, @NonNull Closure closu
     if (opts.variable == null) {
       opts.variable = 'LOCKED_RESOURCE';
     }
+    if (opts.inversePrecedence == null) {
+      opts.inversePrecedence = false;
+    }
+    if (opts.skipIfLocked == null) {
+      opts.skipIfLocked = false;
+    }
     lock(
       resource: resource.getName(),
       variable: opts.variable,
