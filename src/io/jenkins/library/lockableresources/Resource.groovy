@@ -21,7 +21,7 @@ class Resource implements Serializable {
   /** 
   */
   public Resource(@NonNull String resourceName) {
-    this.resource = RM.getResource(resourceName);
+    this.resource = LRM.get().fromName(resourceName);
     if (this.resource == null) {
       this.resource = new LockableResource(resourceName);
     }
