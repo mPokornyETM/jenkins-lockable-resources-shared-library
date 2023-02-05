@@ -165,7 +165,7 @@ class ResourcesManager  implements Serializable {
   //----------------------------------------------------------------------------
   // NonCps because sort is NON-CPS. See https://issues.jenkins.io/browse/JENKINS-44924
   @NonCPS
-  private _sort(list, orderBy) {
+  private static _sort(List<Map>list, def orderBy) {
     def orderByDef = new OrderBy(orderBy);
     list.sort(orderByDef);
   }
