@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import jenkins.model.Jenkins;
 import io.jenkins.library.lockableresources.Resource;
 import io.jenkins.library.lockableresources.ResourceLabel;
+import io.jenkins.library.lockableresources.Utils;
 
 //-----------------------------------------------------------------------------
 void call(@NonNull String  nodeName) {
@@ -37,8 +38,7 @@ void call() {
 */
 void call(@NonNull Map opts) {
 
-// echo ' parseExpression ' + parsed.class.getName() + ' ' + parsed.toString();
-// echo 'getMethods ' + parsed.class.getMethods().join('\n');
+  Utils.fixNullMap(opts);
 
   // synchronized over all jobs
   lockResource('mirrorNodes') {
@@ -123,6 +123,7 @@ String  mirrorNodeToLockableResource(@NonNull String nodeName, @NonNull Map opts
   if (computer == null) {
     return; // this node does not exists
   }
+
   return mirrorNodeToLockableResource(computer, opts);
 }
 
@@ -132,6 +133,8 @@ String mirrorNodeToLockableResource(@NonNull Computer computer, @NonNull Map opt
   if (computer == null) {
     return null; // this node does not exists
   }
+
+  Utils.fixNullMap(opts);
 
   Map properties = nodeToResourceProperties(computer);
   if (opts.nodeToResourceProperties != null) {

@@ -2,6 +2,7 @@
 
 import jenkins.model.Jenkins;
 import io.jenkins.library.lockableresources.ResourceLabel;
+import io.jenkins.library.lockableresources.Utils;
 
 //-----------------------------------------------------------------------------
 void call(String nodeName, Closure closure) {
@@ -10,9 +11,7 @@ void call(String nodeName, Closure closure) {
 
 //-----------------------------------------------------------------------------
 void call(final String nodeName, Map opts, Closure closure) {
-  if (opts == null) {
-    opts = [:]
-  }
+  Utils.fixNullMap(opts);
 
   if (Jenkins.get().getNode(nodeName) != null) {
     mirrorNodesToLockableResources(nodeName, opts.mirrorOptions);

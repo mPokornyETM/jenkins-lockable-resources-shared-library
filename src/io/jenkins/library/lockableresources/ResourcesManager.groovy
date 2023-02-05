@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.util.Collections;
 import io.jenkins.library.lockableresources.Resource;
 import io.jenkins.library.lockableresources.ResourceLabel;
+import io.jenkins.library.lockableresources.Utils;
 import org.jenkins.plugins.lockableresources.LockableResourcesManager as LRM;
 import org.jenkins.plugins.lockableresources.LockableResource;
 import org.kohsuke.accmod.Restricted;
@@ -61,6 +62,7 @@ class ResourcesManager  implements Serializable {
   @NonCPS
   @Restricted(NoExternalUse.class)
   public static List<LockableResource> getResources(ResourceLabel resourceLabel, Map opts = [:]) {
+    Utils.fixNullMap(opts);
     List<LockableResource> matches = LRM.get().getResourcesWithLabel(resourceLabel.name, [:]);
     return filter(matches, opts);
   }
@@ -69,6 +71,7 @@ class ResourcesManager  implements Serializable {
   @NonCPS
   @Restricted(NoExternalUse.class)
   public static List<LockableResource> getResources(Closure closure, Map opts = [:]) {
+    Utils.fixNullMap(opts);
     List<LockableResource> matches = [];
     for(LockableResource resource : getAllResources()) {
       boolean match = closure(new Resource(resource));
@@ -104,9 +107,7 @@ class ResourcesManager  implements Serializable {
   //---------------------------------------------------------------------------
   @NonCPS
   private static List<LockableResource> filter(List<LockableResource> allMatches, Map opts) {
-    if (opts == null) {
-      opts = [:];
-    }
+    Utils.fixNullMap(opts);
 
     final int expectedCount = opts.expectedCount != null ? opts.expectedCount : 0;
     final int minCount = opts.minCount != null ? opts.minCount : expectedCount;
