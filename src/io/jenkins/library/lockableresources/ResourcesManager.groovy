@@ -17,7 +17,7 @@ import org.kohsuke.accmod.restrictions.NoExternalUse;
 class ResourcesManager  implements Serializable {
 
   //---------------------------------------------------------------------------
-  /** 
+  /**
   */
   //@NonCPS
   @Restricted(NoExternalUse.class)
@@ -31,7 +31,7 @@ class ResourcesManager  implements Serializable {
   }
 
   //---------------------------------------------------------------------------
-  /** 
+  /**
   */
   //@NonCPS
   @Restricted(NoExternalUse.class)
@@ -44,7 +44,7 @@ class ResourcesManager  implements Serializable {
   }
 
   //---------------------------------------------------------------------------
-  /** 
+  /**
   */
   //@NonCPS
   @Restricted(NoExternalUse.class)
@@ -152,7 +152,7 @@ class ResourcesManager  implements Serializable {
     }
 
     // in extra function, because of NonCPS
-    _sort(list, orderBy)
+    _sort(list, new OrderBy(orderBy))
 
     resources = [];
     for (Map map : list) {
@@ -166,8 +166,8 @@ class ResourcesManager  implements Serializable {
   // NonCps because sort is NON-CPS. See https://issues.jenkins.io/browse/JENKINS-44924
   @NonCPS
   private static _sort(List<Map>list, def orderBy) {
-    def orderByDef = new OrderBy(orderBy);
-    list.sort(orderByDef);
+    // def orderByDef = new OrderBy(orderBy);
+    list.sort(orderBy);
   }
 
   //----------------------------------------------------------------------------
