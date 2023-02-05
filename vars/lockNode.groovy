@@ -43,6 +43,7 @@ void call(final String nodeName, Map opts, Closure closure) {
 }
 
 //-----------------------------------------------------------------------------
+@NonCPS
 List<Resource> findNodesByLabel(String labelExpression, Map opts) {
   final Label parsed = Label.parseExpression(labelExpression);
   if (opts.quantity == null) {
