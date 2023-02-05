@@ -65,8 +65,9 @@ Label parsed = Label.parseExpression('os:Windows && LabelA');
       for(ResourceLabel resourceLabel : resource.getLabels()) {
         atomLabels.push(new LabelAtom(resourceLabel.getName()));
       }
+      echo resource.getName() + ' do I match ? ';
       boolean matches = parsed.matches(atomLabels);
-      echo resource.getName() + ' do I match ? ' + matches;
+      echo matches ? 'YEA BABY' : 'NOPE :-('
       if (mirrored.contains(resource.getName())) {
         return;
       }
