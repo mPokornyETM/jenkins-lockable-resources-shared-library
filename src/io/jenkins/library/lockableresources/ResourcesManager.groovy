@@ -75,7 +75,6 @@ class ResourcesManager  implements Serializable {
     List<LockableResource> matches = [];
     for(LockableResource resource : getAllResources()) {
       boolean match = closure(new Resource(resource));
-      Utils.echo(resource.name + ' ' + match.class.name + ' ' + match);
       if (match) {
         matches.push(resource);
       }
@@ -135,6 +134,8 @@ class ResourcesManager  implements Serializable {
 
     if (quantity == 0) {
       // return all possible resources
+      
+      Utils.echo('return all: ' + allMatches);
       return allMatches;
     }
 
@@ -143,6 +144,7 @@ class ResourcesManager  implements Serializable {
       retList.push(allMatches[i]);
     }
 
+    Utils.echo("return $quantity: " + retList);
     return retList;
   }
 
