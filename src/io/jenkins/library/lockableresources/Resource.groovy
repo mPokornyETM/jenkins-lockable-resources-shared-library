@@ -2,7 +2,10 @@
 package io.jenkins.library.lockableresources;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
+import hudson.model.Label;
+import hudson.model.labels.LabelAtom;
 import java.io.Serializable;
+import java.util.Collections;
 // import groovy.transform.Synchronized;
 import io.jenkins.library.lockableresources.ResourcesManager as LRM;
 import io.jenkins.library.lockableresources.ResourceLabel;
@@ -208,5 +211,13 @@ class Resource implements Serializable {
       if (other.name != null) return false;
     } else if (!name.equals(other.name)) return false;
     return true;
+  }
+
+  public boolean matches(Label labelExpression) {
+    Collection<LabelAtom> atomLabels =  [];
+    for(ResourceLabel resourceLabel : this.getLabels()) {
+      atomLabels.push(new LabelAtom(resourceLabel.getName()));
+    }
+    return parsed.matches(atomLabels);
   }
 }
