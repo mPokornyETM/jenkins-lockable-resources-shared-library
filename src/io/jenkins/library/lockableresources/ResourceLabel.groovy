@@ -23,11 +23,11 @@ class ResourceLabel implements Serializable {
 
   //---------------------------------------------------------------------------
   //@NonCPS
-  static int inc = 0;
+//   static int inc = 0;
   public String getName() {
-    if ( inc > 10)
-    throw new Exception('How?')
-    inc++
+    // if ( inc > 10)
+    // throw new Exception('How?')
+    // inc++
     return name;
   }
 }
