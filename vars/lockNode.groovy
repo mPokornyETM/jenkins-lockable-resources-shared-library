@@ -24,13 +24,13 @@ void call(final String nodeName, Map opts, Closure closure) {
   } else {
     // your node does not exists, we try to find it as label
     echo "findNodesByLabel $nodeName, $opts"
-    def matched = findNodesByLabel(nodeName, opts);
+    List<Resource> matched = findNodesByLabel(nodeName, opts);
     if (matched.size() == 0) {
       throw(new Exception('No matches for: ' + nodeName));
     }
 
     for(int i = 0; i < matched.size(); i++) {
-      String matchedNode = matched[i];
+      String matchedNode = matched[i].getName();
       if (i == (matched.size() -1)) {
         echo("Trying to acquire lock on node [$nodeName]");
         lockResource(matchedNode, opts) {
