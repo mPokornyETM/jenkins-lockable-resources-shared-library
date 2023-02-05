@@ -14,6 +14,7 @@ void call(final String nodeName, Map opts, Closure closure) {
   opts = Utils.fixNullMap(opts);
 
   if (Jenkins.get().getNode(nodeName) != null) {
+    echo "mirrorNodesToLockableResources $nodeName"
     mirrorNodesToLockableResources(nodeName, Utils.fixNullMap(opts.mirrorOptions));
     opts.remove('mirrorOptions');
     echo("Trying to acquire lock on node [$nodeName]");
@@ -22,6 +23,7 @@ void call(final String nodeName, Map opts, Closure closure) {
     }
   } else {
     // your node does not exists, we try to find it as label
+    echo "findNodesByLabel $nodeName, $opts"
     def matched = findNodesByLabel(nodeName, opts);
     if (matched.size() == 0) {
       throw(new Exception('No matches for: ' + nodeName));
