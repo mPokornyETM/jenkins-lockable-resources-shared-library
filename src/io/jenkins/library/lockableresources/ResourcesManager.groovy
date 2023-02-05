@@ -173,7 +173,7 @@ class ResourcesManager  implements Serializable {
     // def orderByDef = new OrderBy(orderBy);
     // list.sort(orderBy);
     list.sort(new OrderBy(
-        { !it.isFree,
+        { !it.isFree },
         // all free nodes first
         { it.node != null && !it.node.isOnline },
         // 0 executors means, there is something running
