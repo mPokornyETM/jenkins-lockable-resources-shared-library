@@ -152,7 +152,7 @@ class ResourcesManager  implements Serializable {
     }
 
     // in extra function, because of NonCPS
-    _sort(list, new OrderBy(orderBy))
+    _sort(list, orderBy);
 
     resources = [];
     for (Map map : list) {
@@ -173,6 +173,7 @@ class ResourcesManager  implements Serializable {
     // def orderByDef = new OrderBy(orderBy);
     // list.sort(orderBy);
     list.sort(new OrderBy({ !it.isFree }));
+    list.sort(new OrderBy(orderBy));
   }
 
   //----------------------------------------------------------------------------
