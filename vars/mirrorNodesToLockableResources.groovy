@@ -38,7 +38,7 @@ void call() {
 */
 void call(@NonNull Map opts) {
 
-  Utils.fixNullMap(opts);
+  opts = Utils.fixNullMap(opts);
 
   // synchronized over all jobs
   lockResource('mirrorNodes') {
@@ -134,7 +134,7 @@ String mirrorNodeToLockableResource(@NonNull Computer computer, @NonNull Map opt
     return null; // this node does not exists
   }
 
-  Utils.fixNullMap(opts);
+  opts = Utils.fixNullMap(opts);
 
   Map properties = nodeToResourceProperties(computer);
   if (opts.nodeToResourceProperties != null) {

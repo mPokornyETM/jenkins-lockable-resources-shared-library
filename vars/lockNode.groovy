@@ -11,7 +11,7 @@ void call(String nodeName, Closure closure) {
 
 //-----------------------------------------------------------------------------
 void call(final String nodeName, Map opts, Closure closure) {
-  Utils.fixNullMap(opts);
+  opts = Utils.fixNullMap(opts);
 
   if (Jenkins.get().getNode(nodeName) != null) {
     mirrorNodesToLockableResources(nodeName, opts.mirrorOptions);

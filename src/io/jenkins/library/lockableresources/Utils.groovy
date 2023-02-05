@@ -5,9 +5,10 @@ class Utils {
 
   //---------------------------------------------------------------------------
   @NonCPS
-  public static void fixNullMap(Map map) {
+  public static Map fixNullMap(Map map) {
     if (map == null) {
-      map = [:];
+      return [:];
     }
+    return map;
   }
 }
