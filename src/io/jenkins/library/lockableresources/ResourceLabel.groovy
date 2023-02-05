@@ -28,6 +28,6 @@ class ResourceLabel implements Serializable {
     if ( inc > 10)
     throw new Exception('How?')
     inc++
-    return this.name;
+    return name;
   }
 }
