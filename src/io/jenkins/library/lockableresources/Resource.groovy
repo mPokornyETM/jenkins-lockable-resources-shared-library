@@ -196,6 +196,8 @@ class Resource implements Serializable {
         map['node'] = compMap;
       }
     }
+
+    return map;
   }
 
   //----------------------------------------------------------------------------
