@@ -143,7 +143,8 @@ class ResourcesManager  implements Serializable {
   }
 
   //---------------------------------------------------------------------------
-  //@NonCPS
+  // NonCps because sort is NON-CPS. See https://issues.jenkins.io/browse/JENKINS-44924
+  @NonCPS
   private static List<LockableResource> sort(List<LockableResource> resources, def orderBy) {
     // get current state and property of resources to eliminate
     // java.lang.IllegalArgumentException: Comparison method violates its general contract!
