@@ -13,9 +13,10 @@ void call(final String nodeName, Map opts, Closure closure) {
   if (opts == null) {
     opts = [:]
   }
-  
+
   if (Jenkins.get().getNode(nodeName) != null) {
-    mirrorNodeToLockableResource(nodeName, opts.mirrorOptions);
+    mirrorNodesToLockableResources(nodeName, opts.mirrorOptions);
+    opts.remove('mirrorOptions');
     lockResource(nodeName, opts) {
       inLockScope(nodeName, opts, closure);
     }
@@ -25,7 +26,7 @@ void call(final String nodeName, Map opts, Closure closure) {
     if (matched.size()) {
       throw(new Exception('No matches for: ' + nodeName));
     }
-    
+
     for(int i = 0; i < matched.size(); i++) {
       String matchedNode = matched[i];
       if (i == (matched.size() -1)) {
@@ -44,14 +45,14 @@ List<Resource> findNodesByLabel(String labelExpression, Map opts) {
   final Label parsed = Label.parseExpression(labelExpression);
   if (opts.quantity == null) {
     opts.quantity = 1; // per default lock only 1 node
-  } 
+  }
   return lockableResource.find(opts) {it -> return it.hasLabel(ResourceLabel.NODE_LABEL) && it.matches(parsed)};
 }
 
 //-----------------------------------------------------------------------------
 void inLockScope(String nodeName, Map opts, Closure closure) {
   if (opts.allocateExecutor) {
-    opts.allocateExecutor = null;
+    opts.remove('allocateExecutor');
     node(nodeName) {
       inLockScope(nodeName, opts);
     }

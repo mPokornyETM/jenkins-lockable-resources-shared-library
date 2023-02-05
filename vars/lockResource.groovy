@@ -19,7 +19,7 @@ void call(@NonNull String resourceName, @NonNull Map opts, @NonNull Closure clos
   if (opts.createOnDemand != null && !ResourcesManager.resourceExists(resourceName)) {
     final Map props = (opts.createOnDemand instanceof Map) ? opts.createOnDemand : [:];
     resource.create(props);
-    opts.createOnDemand = null;
+    opts.remove('createOnDemand');
   }
   _lock(resource, opts, closure);
 }
@@ -62,7 +62,7 @@ void _insideLock(@NonNull Resource resource, @NonNull Map opts, @NonNull Closure
 
   if (opts.timeout != null) {
     timeout(opts.timeout) {
-      opts.timeout = null;
+      opts.remove('timeout');
       _insideLock(resource, opts, closure);
     }
     return;

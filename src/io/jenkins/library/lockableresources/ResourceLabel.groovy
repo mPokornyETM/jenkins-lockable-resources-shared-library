@@ -7,7 +7,7 @@ import java.io.Serializable;
 class ResourceLabel implements Serializable {
 
   public static final String NODE_LABEL = 'node';
-  
+
   private String name;
 
   //---------------------------------------------------------------------------

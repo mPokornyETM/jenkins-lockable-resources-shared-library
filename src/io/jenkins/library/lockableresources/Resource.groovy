@@ -40,7 +40,7 @@ class Resource implements Serializable {
   //@Synchronized
   public void create(Map properties = null) {
     if (this.exists()) {
-      throw new Exception('Resource ' + $this.name + ' currently exists!' + 
+      throw new Exception('Resource ' + $this.name + ' currently exists!' +
                           'Therefore can not be created.');
     }
     if (properties != null) {
@@ -200,7 +200,7 @@ class Resource implements Serializable {
       throw(new Exception("Unsupported labels conversion: " + labels.class.name + " " + labels));
     }
 
-    return labelsString.trim(); 
+    return labelsString.trim();
   }
 
   //----------------------------------------------------------------------------
