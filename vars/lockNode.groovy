@@ -60,9 +60,11 @@ List<Resource> findNodesByLabel(String labelExpression, Map opts) {
       // defensive check, shall never happen, but nobody know
       { it.node != null },
       // all free nodes first
-      { it.node != null && !it.node.isOnline },
+      { !it.node.isOnline },
       // 0 executors means, there is something running
-      { it.node != null && !it.node.countIdle }
+      { -it.node.countIdle }, 
+      // keep last idle on the end
+      { -it.node.idleStartMilliseconds }
     ];
   }
   
