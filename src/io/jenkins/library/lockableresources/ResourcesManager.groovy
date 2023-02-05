@@ -81,7 +81,7 @@ class ResourcesManager  implements Serializable {
     }
 
     Utils.echo('matches: ' + matches);
-    
+
     return filter(matches, opts);
   }
 
@@ -134,7 +134,7 @@ class ResourcesManager  implements Serializable {
 
     if (quantity == 0) {
       // return all possible resources
-      
+
       Utils.echo('return all: ' + allMatches);
       return allMatches;
     }
@@ -167,5 +167,7 @@ class ResourcesManager  implements Serializable {
     for (Map map : list) {
       resources.add(new LockableResource(map.name));
     }
+
+    return resources;
   }
 }
