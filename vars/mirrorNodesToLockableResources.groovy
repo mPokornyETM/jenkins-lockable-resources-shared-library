@@ -41,7 +41,10 @@ void call(@NonNull Map opts) {
 
 echo 'getLabels ' + Jenkins.get().getLabels();
 echo 'getLabelAtoms ' + Jenkins.get().getLabelAtoms();
-echo 'parseExpression ' + Label.parseExpression('os:Windows && LabelA');
+def object = Label.parseExpression('os:Windows && LabelA');
+echo object.class.name + ' parseExpression ' + object
+echo 'getMethods ' + object.class.getMethods();
+
   // synchronized over all jobs
   lock('mirrorNodes') {
     // mirror existing nodes
