@@ -226,7 +226,8 @@ class Resource implements Serializable {
     return labelsString.trim();
   }
 
-  //@NonCPS
+  // NonCPS because LabelAtom is not serializable
+  @NonCPS
   public boolean matches(Label labelExpression) {
     Collection<LabelAtom> atomLabels =  [];
     for(ResourceLabel resourceLabel : this.getLabels()) {
