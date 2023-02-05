@@ -117,7 +117,7 @@ class ResourcesManager  implements Serializable {
     final int quantity = opts.quantity != null ? opts.quantity : 0;
     final int minCount = opts.minCount != null ? opts.minCount : quantity;
 
-    if (minCount > quantity) {
+    if ((quantity > 0) && (minCount > quantity)) {
       throw(new Exception("Parameter mismatch minCount $minCount vs quantity $quantity"));
     }
     if (minCount > allMatches.size()) {
