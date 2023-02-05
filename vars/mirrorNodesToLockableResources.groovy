@@ -39,12 +39,22 @@ void call() {
  Also is the question what shall happens, when is currently locked and node does not
  exists?
 */
-@NonCPS
 void call(@NonNull Map opts) {
 
 echo 'getLabels ' + Jenkins.get().getLabels();
 echo 'getLabelAtoms ' + Jenkins.get().getLabelAtoms();
 Label parsed = Label.parseExpression('os:Windows && LabelA');
+
+def comp = jenkins.model.Jenkins.instance.getComputer('someAgent');
+Collection<LabelAtom> atomLabels = comp.node.getAssignedLabels()
+    //   for(ResourceLabel resourceLabel : resource.getLabels()) {
+    //     atomLabels.push(new LabelAtom(resourceLabel.getName()));
+    //   }
+      echo ' do I match ? ';
+      boolean matches = parsed.matches(atomLabels);
+      echo matches ? 'YEA BABY' : 'NOPE :-('
+
+
 // echo ' parseExpression ' + parsed.class.getName() + ' ' + parsed.toString();
 // echo 'getMethods ' + parsed.class.getMethods().join('\n');
 
@@ -62,13 +72,7 @@ Label parsed = Label.parseExpression('os:Windows && LabelA');
     // step all resources and check if the node has been removed 
     final ResourceLabel nodeLabel = new ResourceLabel(ResourceLabel.NODE_LABEL);
     for(Resource resource : lockableResource.find(nodeLabel)) {
-      Collection<LabelAtom> atomLabels = [];
-      for(ResourceLabel resourceLabel : resource.getLabels()) {
-        atomLabels.push(new LabelAtom(resourceLabel.getName()));
-      }
-      echo resource.getName() + ' do I match ? ';
-      boolean matches = parsed.matches(atomLabels);
-      echo matches ? 'YEA BABY' : 'NOPE :-('
+      
       if (mirrored.contains(resource.getName())) {
         return;
       }
