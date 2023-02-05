@@ -13,6 +13,8 @@ import io.jenkins.library.lockableresources.Resource;
 import io.jenkins.library.lockableresources.ResourceLabel;
 
 import hudson.model.Label;
+import hudson.model.labels.LabelAtom;
+import java.util.Collections;
 
 //-----------------------------------------------------------------------------
 void call(@NonNull String  nodeName) {
@@ -41,9 +43,9 @@ void call(@NonNull Map opts) {
 
 echo 'getLabels ' + Jenkins.get().getLabels();
 echo 'getLabelAtoms ' + Jenkins.get().getLabelAtoms();
-def object = Label.parseExpression('os:Windows && LabelA');
-echo ' parseExpression ' + object.class.name + ' ' + object.toString();
-echo 'getMethods ' + object.class.getMethods();
+Label parsed = Label.parseExpression('os:Windows && LabelA');
+echo ' parseExpression ' + object.class.getName() + ' ' + object.toString();
+echo 'getMethods ' + object.class.getMethods().join('\n');
 
   // synchronized over all jobs
   lock('mirrorNodes') {
@@ -59,6 +61,12 @@ echo 'getMethods ' + object.class.getMethods();
     // step all resources and check if the node has been removed 
     final ResourceLabel nodeLabel = new ResourceLabel(ResourceLabel.NODE_LABEL);
     for(Resource resource : lockableResource.find(nodeLabel)) {
+      Collection<LabelAtom> atomLabels = [];
+      for(ResourceLabel resourceLabel : resource.getLabels()) {
+        atomLabels.push(new LabelAtom(resourceLabel.getName()));
+      }
+      boolean matches = parsed.matches(atomLabels);
+      echo resource.getName() + ' do I match ? ' + matches;
       if (mirrored.contains(resource.getName())) {
         return;
       }
