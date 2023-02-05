@@ -15,14 +15,13 @@ import org.jenkins.plugins.lockableresources.LockableResource;
 class Resource implements Serializable {
 
   private transient LockableResource resource;
-  private String resourceName;
+
   //---------------------------------------------------------------------------
   /** Returns {@code LockableResource} resource.
     @return Lockable-resource or null when does not exists.
     NonCPS because the LockableResource is not serializable.
   */
   public Resource(@NonNull String resourceName) {
-    this.resourceName = resourceName;
     this.resource = LRM.getResource(resourceName);
     if (this.resource == null) {
       this.resource = new LockableResource(resourceName);
@@ -32,7 +31,6 @@ class Resource implements Serializable {
   //---------------------------------------------------------------------------
   public Resource(@NonNull LockableResource resource) {
     this.resource = resource;
-    this.resourceName = resource.name;
   }
 
   //----------------------------------------------------------------------------
@@ -40,7 +38,7 @@ class Resource implements Serializable {
   //@Synchronized
   public void create(Map properties = null) {
     if (this.exists()) {
-      throw new Exception('Resource ' + $this.name + ' currently exists!' +
+      throw new Exception('Resource ' + this.getName() + ' currently exists!' +
                           'Therefore can not be created.');
     }
     if (properties != null) {
@@ -58,7 +56,7 @@ class Resource implements Serializable {
   //----------------------------------------------------------------------------
   //@NonCPS
   public boolean exists() {
-    return LRM.resourceExists(this.name);
+    return LRM.resourceExists(this.getName());
   }
 
   //----------------------------------------------------------------------------
@@ -159,10 +157,10 @@ class Resource implements Serializable {
   //@NonCPS
   public Map toMap() {
     Map map = [
-      'name' : this.name,
-      'description' : this.description,
-      'note' : this.note,
-      'labels' : this.labels,
+      'name' : this.getName(),
+      'description' : this.getDescription(),
+      'note' : this.getNote(),
+      'labels' : this.getLabels(),
       'isFree' : this.isFree(),
       'reservedTimestamp' : this.resource.getReservedTimestamp(),
       'isLocked' : this.resource.isLocked(),
@@ -174,7 +172,7 @@ class Resource implements Serializable {
     ];
 
     if (this.hasLabel(ResourceLabel.NODE_LABEL)) {
-      Computer computer = jenkins.model.Jenkins.instance.getComputer(this.name);
+      Computer computer = jenkins.model.Jenkins.instance.getComputer(this.getName());
       if (computer != null) {
         Map compMap = [:];
         compMap['isOnline'] = computer.isOnline();
