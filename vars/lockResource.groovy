@@ -48,7 +48,7 @@ void _lock(@NonNull Resource resource, @NonNull Map opts, @NonNull Closure closu
   } catch (error) {
     boolean accepted = false;
     if (opts.onFailure != null) {
-      accepted = opts.onFailure(resource, error) 
+      accepted = opts.onFailure(resource, error)
     }
     if (!accepted) {
       // not handled exception

@@ -1,6 +1,6 @@
 #!groovy
 
-import jenkins.model.Jenkins.instance;
+import jenkins.model.Jenkins;
 
 //-----------------------------------------------------------------------------
 void call(String nodeName, Closure closure) {
@@ -8,16 +8,42 @@ void call(String nodeName, Closure closure) {
 }
 
 //-----------------------------------------------------------------------------
-void call(String nodeName, Map opts, Closure closure) {
+void call(final String nodeName, Map opts, Closure closure) {
   if (opts == null) {
     opts = [:]
   }
   
-  mirrorNodeToLockableResource(nodeName, opts.mirrorOptions);
-
-  lockResource(nodeName, opts) {
-    inLockScope(nodeName, opts, closure);
+  if (Jenkins.get().getNode(nodeName) != null) {
+    mirrorNodeToLockableResource(finalNodeName, opts.mirrorOptions);
+    lockResource(finalNodeName, opts) {
+      inLockScope(finalNodeName, opts, closure);
+    }
+  } else {
+    // your node does not exists, we try to find it as label
+    def matched = findNodesByLabel(nodeName, opts);
+    if (matched.size()) {
+      throw(new Exception('Nom matches for: ' + nodeName));
+    }
+    
+    for(int i = 0; i < matched.size(); i++) {
+      if (i == (matched.size() -1)) {
+        lockResource(finalNodeName, opts) {
+          inLockScope(finalNodeName, opts, closure);
+        }
+      } else {
+        lockResource(finalNodeName, opts) {}
+      }
+    }
   }
+}
+
+//-----------------------------------------------------------------------------
+List<Resource> findNodesByLabel(String labelExpression, Map opts) {
+  final Label parsed = Label.parseExpression(labelExpression);
+  if (opts.quantity == null) {
+    opts.quantity = 1; // per default lock only 1 node
+  } 
+  return lockableResource.find(opts) {it -> return it.matches(parsed)};
 }
 
 //-----------------------------------------------------------------------------
@@ -32,4 +58,3 @@ void inLockScope(String nodeName, Map opts, Closure closure) {
 
   closure();
 }
-

@@ -12,10 +12,6 @@ import jenkins.model.Jenkins;
 import io.jenkins.library.lockableresources.Resource;
 import io.jenkins.library.lockableresources.ResourceLabel;
 
-import hudson.model.Label;
-import hudson.model.labels.LabelAtom;
-import java.util.Collections;
-
 //-----------------------------------------------------------------------------
 void call(@NonNull String  nodeName) {
   mirrorNodeToLockableResource(nodeName, [:]);
@@ -32,7 +28,7 @@ void call() {
 }
 
 //-----------------------------------------------------------------------------
-/** 
+/**
  Currently are nodes only added or updated, but not removed. There is good reason.
  We want to destroy your instance.
  Maybe when we add enabled option in the 'LockableResource', we can disable it.
@@ -40,15 +36,6 @@ void call() {
  exists?
 */
 void call(@NonNull Map opts) {
-
-echo 'getLabels ' + Jenkins.get().getLabels();
-echo 'getLabelAtoms ' + Jenkins.get().getLabelAtoms();
-Label parsed = Label.parseExpression('os:Windows && LabelA');
-
-      echo ' do I match ? ';
-      boolean matches = res.matches(parsed);
-      echo matches ? 'YEA BABY' : 'NOPE :-('
-
 
 // echo ' parseExpression ' + parsed.class.getName() + ' ' + parsed.toString();
 // echo 'getMethods ' + parsed.class.getMethods().join('\n');
@@ -64,10 +51,10 @@ Label parsed = Label.parseExpression('os:Windows && LabelA');
       }
     }
 
-    // step all resources and check if the node has been removed 
+    // step all resources and check if the node has been removed
     final ResourceLabel nodeLabel = new ResourceLabel(ResourceLabel.NODE_LABEL);
     for(Resource resource : lockableResource.find(nodeLabel)) {
-      
+
       if (mirrored.contains(resource.getName())) {
         return;
       }
@@ -80,7 +67,6 @@ Label parsed = Label.parseExpression('os:Windows && LabelA');
       resource.save();
     }
   }
-  
 }
 
 //-----------------------------------------------------------------------------
@@ -121,7 +107,7 @@ Map nodeToResourceProperties(Computer computer) {
     note += 'Mirrored from ' + url + '\n';
     note += 'Last update at ' + format.format(new Date());
   }
-  
+
   return [
     'description' : computer.getDescription(),
     'labels' : ResourceLabel.NODE_LABEL + ' ' + computer.node.labelString,

@@ -100,7 +100,7 @@ class ResourcesManager  implements Serializable {
     return ResourcesManager.getResource(resourceName) != null;
   }
 
-  
+
   //---------------------------------------------------------------------------
   @NonCPS
   private static List<LockableResource> filter(List<LockableResource> allMatches, Map opts) {
@@ -126,7 +126,7 @@ class ResourcesManager  implements Serializable {
     if (opts.orderBy != null) {
       allMatches = sort(allMatches, opts.orderBy);
     }
-    
+
     List<LockableResource> retList = [];
     for(int i = 0; i < expectedCount; i++) {
       retList.push(allMatches[i]);
