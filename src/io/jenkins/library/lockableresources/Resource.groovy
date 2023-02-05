@@ -7,9 +7,10 @@ import hudson.model.labels.LabelAtom;
 import java.io.Serializable;
 import java.util.Collections;
 // import groovy.transform.Synchronized;
-import io.jenkins.library.lockableresources.ResourcesManager as LRM;
+import io.jenkins.library.lockableresources.ResourcesManager as RM;
 import io.jenkins.library.lockableresources.ResourceLabel;
 import org.jenkins.plugins.lockableresources.LockableResource;
+import org.jenkins.plugins.lockableresources.LockableResourcesManager as LRM;
 
 // NonCPS: since LockableResource contains transient variables, they cannot be correctly serialized
 class Resource implements Serializable {
@@ -17,12 +18,10 @@ class Resource implements Serializable {
   private transient LockableResource resource;
 
   //---------------------------------------------------------------------------
-  /** Returns {@code LockableResource} resource.
-    @return Lockable-resource or null when does not exists.
-    NonCPS because the LockableResource is not serializable.
+  /** 
   */
   public Resource(@NonNull String resourceName) {
-    this.resource = LRM.getResource(resourceName);
+    this.resource = RM.getResource(resourceName);
     if (this.resource == null) {
       this.resource = new LockableResource(resourceName);
     }
@@ -44,19 +43,19 @@ class Resource implements Serializable {
     if (properties != null) {
       this.fromMap(properties);
     }
-    LRM.getAllResources().add(this.resource);
+    LRM.get().getResources().add(this.resource);
   }
 
   //----------------------------------------------------------------------------
   //@NonCPS
   public void save() {
-    LRM.save();
+    RM.save();
   }
 
   //----------------------------------------------------------------------------
   //@NonCPS
   public boolean exists() {
-    return LRM.resourceExists(this.getName());
+    return RM.resourceExists(this.getName());
   }
 
   //----------------------------------------------------------------------------
@@ -225,16 +224,6 @@ class Resource implements Serializable {
     }
 
     return labelsString.trim();
-  }
-
-  //----------------------------------------------------------------------------
-  //@NonCPS
-  public static List<Resource> toSafeList(@NonNull List<LockableResource> list) {
-    List<Resource> ret = [];
-    for(LockableResource r : list) {
-      ret.push(new Resource(r));
-    }
-    return ret;
   }
 
   //@NonCPS

@@ -30,8 +30,8 @@ void call() {
 
 //-----------------------------------------------------------------------------
 /**
- Currently are nodes only added or updated, but not removed. There is good reason.
- We want to destroy your instance.
+ Currently are nodes only added or updated, but not removed. There is very good reason.
+ We would destroy your instance.
  Maybe when we add enabled option in the 'LockableResource', we can disable it.
  Also is the question what shall happens, when is currently locked and node does not
  exists?

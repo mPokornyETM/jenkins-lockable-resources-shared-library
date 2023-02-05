@@ -17,26 +17,26 @@ import org.kohsuke.accmod.restrictions.NoExternalUse;
 class ResourcesManager  implements Serializable {
 
   //---------------------------------------------------------------------------
-  /** Returns {@code LockableResource} resource.
-    @return Lockable-resource or null when does not exists.
-    NonCPS because the LockableResource is not serializable.
+  /** 
   */
   //@NonCPS
   @Restricted(NoExternalUse.class)
   @CheckForNull
-  public static LockableResource getResource(@NonNull String resourceName) {
-    return LRM.get().fromName(resourceName);
+  public static Resource getResource(@NonNull String resourceName) {
+    def r = LRM.get().fromName(resourceName);
+    if (r == null) {
+      return null;
+    }
+    return new Resource(r);
   }
 
   //---------------------------------------------------------------------------
-  /** Returns {@code LockableResource} resource.
-    @return Lockable-resource or null when does not exists.
-    NonCPS because the LockableResource is not serializable.
+  /** 
   */
   //@NonCPS
   @Restricted(NoExternalUse.class)
-  public static LockableResource getResourceOrDie(@NonNull String resourceName) {
-    LockableResource resource = ResourcesManager.getResource(resourceName);
+  public static Resource getResourceOrDie(@NonNull String resourceName) {
+    Resource resource = ResourcesManager.getResource(resourceName);
     if (resource == null) {
       throw new Exception("Lockable resource '$resourceName' does not exist!");
     }
@@ -44,14 +44,12 @@ class ResourcesManager  implements Serializable {
   }
 
   //---------------------------------------------------------------------------
-  /** Returns {@code LockableResource} resource.
-    @return Lockable-resource or null when does not exists.
-    NonCPS because the LockableResource is not serializable.
+  /** 
   */
   //@NonCPS
   @Restricted(NoExternalUse.class)
-  public static List<LockableResource> getResources(@NonNull List<String> resourceNames) {
-    List<LockableResource> retList = [];
+  public static List<Resource> getResources(@NonNull List<String> resourceNames) {
+    List<Resource> retList = [];
     for (String resourceName : resourceNames) {
       retList.push(ResourcesManager.getResourceOrDie(resourceName));
     }
@@ -61,21 +59,19 @@ class ResourcesManager  implements Serializable {
   //---------------------------------------------------------------------------
   //@NonCPS
   @Restricted(NoExternalUse.class)
-  public static List<LockableResource> getResources(ResourceLabel resourceLabel, Map opts = [:]) {
-    opts = Utils.fixNullMap(opts);
-    List<LockableResource> matches = LRM.get().getResourcesWithLabel(resourceLabel.name, [:]);
-    return reOrder(matches, opts);
+  public static List<Resource> getResources(ResourceLabel resourceLabel, Map opts = [:]) {
+    return reOrder(toSafeList(LRM.get().getResourcesWithLabel(resourceLabel.name, [:])), opts);
   }
 
   //---------------------------------------------------------------------------
   //@NonCPS
   @Restricted(NoExternalUse.class)
-  public static List<LockableResource> getResources(Closure closure, Map opts = [:]) {
+  public static List<Resource> getResources(Closure closure, Map opts = [:]) {
     opts = Utils.fixNullMap(opts);
-    List<LockableResource> matches = [];
+    List<Resource> matches = [];
 
-    for(LockableResource resource : getAllResources()) {
-      boolean match = closure(new Resource(resource));
+    for(Resource resource : getAllResources()) {
+      boolean match = closure(resource);
       if (match) {
         matches.push(resource);
       }
@@ -87,8 +83,8 @@ class ResourcesManager  implements Serializable {
   //---------------------------------------------------------------------------
   //@NonCPS
   @Restricted(NoExternalUse.class)
-  public static List<LockableResource> getAllResources() {
-    return LRM.get().getResources();
+  public static List<Resource> getAllResources() {
+    return toSafeList(LRM.get().getResources());
   }
 
   //---------------------------------------------------------------------------
@@ -102,13 +98,13 @@ class ResourcesManager  implements Serializable {
   //@NonCPS
   @Restricted(NoExternalUse.class)
   public static boolean resourceExists(@NonNull String resourceName) {
-    return ResourcesManager.getResource(resourceName) != null;
+    return LRM.get().fromName(resourceName) != null;
   }
 
 
   //---------------------------------------------------------------------------
   //@NonCPS
-  private static List<LockableResource> reOrder(List<LockableResource> allMatches, Map opts) {
+  private static List<Resource> reOrder(List<Resource> allMatches, Map opts) {
     opts = Utils.fixNullMap(opts);
 
     final int quantity = opts.quantity != null ? opts.quantity : 0;
@@ -134,7 +130,7 @@ class ResourcesManager  implements Serializable {
       return allMatches;
     }
 
-    List<LockableResource> retList = [];
+    List<Resource> retList = [];
     for(int i = 0; i < quantity; i++) {
       retList.push(allMatches[i]);
     }
@@ -143,26 +139,44 @@ class ResourcesManager  implements Serializable {
   }
 
   //---------------------------------------------------------------------------
-  // NonCps because sort is NON-CPS. See https://issues.jenkins.io/browse/JENKINS-44924
-  @NonCPS
-  private static List<LockableResource> sort(List<LockableResource> resources, def orderBy) {
+  private static List<Resource> sort(List<Resource> resources, def orderBy) {
     // get current state and property of resources to eliminate
     // java.lang.IllegalArgumentException: Comparison method violates its general contract!
     // otherwise nobody can grant, that the resource state/property has been not changed
+    // during sorting
+    // It is only sporadic issue, but it will abort our build
     List<Map> list = [];
 
-    for (LockableResource resource : resources) {
-      list.push(new Resource(resource).toMap());
+    for (Resource resource : resources) {
+      list.push(resource.toMap());
     }
 
-    def orderByDef = new OrderBy(orderBy);
-    list.sort(orderByDef);
+    // in extra function, because of NonCPS
+    _sort(list, orderBy)
 
     resources = [];
     for (Map map : list) {
-      resources.add(new LockableResource(map.name));
+      resources.add(new Resource(map.name));
     }
 
     return resources;
+  }
+
+  //----------------------------------------------------------------------------
+  // NonCps because sort is NON-CPS. See https://issues.jenkins.io/browse/JENKINS-44924
+  @NonCPS
+  private _sort(list, orderBy) {
+    def orderByDef = new OrderBy(orderBy);
+    list.sort(orderByDef);
+  }
+
+  //----------------------------------------------------------------------------
+  //maybe @NonCPS
+  public static List<Resource> toSafeList(@NonNull List<LockableResource> list) {
+    List<Resource> ret = [];
+    for(LockableResource r : list) {
+      ret.push(new Resource(r));
+    }
+    return ret;
   }
 }
