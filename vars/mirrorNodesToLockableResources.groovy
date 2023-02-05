@@ -70,7 +70,7 @@ void call(@NonNull Map opts) {
 }
 
 //-----------------------------------------------------------------------------
-@NonCPS
+//@NonCPS
 @CheckForNull
 Map nodeToResourceProperties(Computer computer) {
   if (computer == null || computer.node == null) {
@@ -117,7 +117,7 @@ Map nodeToResourceProperties(Computer computer) {
 }
 
 //-----------------------------------------------------------------------------
-@NonCPS
+//@NonCPS
 String  mirrorNodeToLockableResource(@NonNull String nodeName, @NonNull Map opts) {
   Computer computer = jenkins.model.Jenkins.instance.getComputer(nodeName);
   if (computer == null) {
@@ -128,7 +128,7 @@ String  mirrorNodeToLockableResource(@NonNull String nodeName, @NonNull Map opts
 }
 
 //-----------------------------------------------------------------------------
-@NonCPS
+//@NonCPS
 String mirrorNodeToLockableResource(@NonNull Computer computer, @NonNull Map opts) {
   if (computer == null) {
     return null; // this node does not exists

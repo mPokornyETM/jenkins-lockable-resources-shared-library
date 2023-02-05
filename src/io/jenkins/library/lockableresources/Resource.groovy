@@ -36,7 +36,7 @@ class Resource implements Serializable {
   }
 
   //----------------------------------------------------------------------------
-  @NonCPS
+  //@NonCPS
   //@Synchronized
   public void create(Map properties = null) {
     if (this.exists()) {
@@ -50,67 +50,67 @@ class Resource implements Serializable {
   }
 
   //----------------------------------------------------------------------------
-  @NonCPS
+  //@NonCPS
   public void save() {
     LRM.save();
   }
 
   //----------------------------------------------------------------------------
-  @NonCPS
+  //@NonCPS
   public boolean exists() {
     return LRM.resourceExists(this.name);
   }
 
   //----------------------------------------------------------------------------
-  @NonCPS
+  //@NonCPS
   public boolean isFree() {
     return (!this.resource.isLocked() && !this.resource.isReserved() && !this.resource.isQueued());
   }
 
   //----------------------------------------------------------------------------
-  @NonCPS
+  //@NonCPS
   public String getName() {
     return this.resource.name;
   }
 
   //----------------------------------------------------------------------------
-  @NonCPS
+  //@NonCPS
   public String toString() {
     return this.getName();
   }
 
   //----------------------------------------------------------------------------
-  @NonCPS
+  //@NonCPS
   public String getDescription() {
     return this.resource.description;
   }
 
   //----------------------------------------------------------------------------
-  @NonCPS
+  //@NonCPS
   public void setDescription(String description) {
     this.resource.setDescription(description);
   }
 
   //----------------------------------------------------------------------------
-  @NonCPS
+  //@NonCPS
   public String getNote() {
     return this.resource.note;
   }
 
   //----------------------------------------------------------------------------
-  @NonCPS
+  //@NonCPS
   public void setNote(String note) {
     this.resource.setNote(note);
   }
 
   //----------------------------------------------------------------------------
-  @NonCPS
+  //@NonCPS
   public boolean isEphemeral() {
     return this.resource.ephemeral;
   }
 
   //----------------------------------------------------------------------------
-  @NonCPS
+  //@NonCPS
   public List<ResourceLabel> getLabels() {
     List<ResourceLabel> list = [];
     for(String label : this.resource.labelsAsList) {
@@ -120,13 +120,13 @@ class Resource implements Serializable {
   }
 
   //----------------------------------------------------------------------------
-  @NonCPS
+  //@NonCPS
   public void setLabels(@NonNull def labels) {
     this.resource.setLabels(Resource.toLabelsString(labels));
   }
 
   //----------------------------------------------------------------------------
-  @NonCPS
+  //@NonCPS
   public void addLabel(@NonNull ResourceLabel label) {
     if (this.resource.hasLabel(label.getName())) {
       return;
@@ -135,7 +135,7 @@ class Resource implements Serializable {
   }
 
   //----------------------------------------------------------------------------
-  @NonCPS
+  //@NonCPS
   public void removeLabel(@NonNull ResourceLabel label) {
     if (!this.resource.hasLabel(label.getName())) {
       return;
@@ -144,19 +144,19 @@ class Resource implements Serializable {
   }
 
   //----------------------------------------------------------------------------
-  @NonCPS
+  //@NonCPS
   public boolean hasLabel(@NonNull String label) {
     return this.resource.hasLabel(label);
   }
 
   //----------------------------------------------------------------------------
-  @NonCPS
+  //@NonCPS
   public boolean hasLabel(@NonNull ResourceLabel label) {
     return hasLabel(label.getName());
   }
 
   //----------------------------------------------------------------------------
-  @NonCPS
+  //@NonCPS
   public Map toMap() {
     Map map = [
       'name' : this.name,
@@ -201,7 +201,7 @@ class Resource implements Serializable {
   }
 
   //----------------------------------------------------------------------------
-  @NonCPS
+  //@NonCPS
   public Map fromMap(@NonNull Map map) {
     this.resource.setDescription(map.description);
     this.resource.setNote(map.note);
@@ -209,7 +209,7 @@ class Resource implements Serializable {
   }
 
   //----------------------------------------------------------------------------
-  @NonCPS
+  //@NonCPS
   private static String toLabelsString(labels) {
     String labelsString = "";
     if (labels == null) {
@@ -230,7 +230,7 @@ class Resource implements Serializable {
   }
 
   //----------------------------------------------------------------------------
-  @NonCPS
+  //@NonCPS
   public static List<Resource> toSafeList(@NonNull List<LockableResource> list) {
     List<Resource> ret = [];
     for(LockableResource r : list) {
@@ -251,7 +251,7 @@ class Resource implements Serializable {
   //  return true;
   //}
 
-  @NonCPS
+  //@NonCPS
   public boolean matches(Label labelExpression) {
     Collection<LabelAtom> atomLabels =  [];
     for(ResourceLabel resourceLabel : this.getLabels()) {

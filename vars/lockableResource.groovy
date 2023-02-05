@@ -11,7 +11,7 @@ import io.jenkins.library.lockableresources.ResourcesManager as RM;
   @return Lockable-resource or null when does not exists.
   NonCPS because the LockableResource is not serializable.
 */
-@NonCPS
+//@NonCPS
 @CheckForNull
 Resource call(String resourceName) {
   return new Resource(RM.getResourceOrDie(resourceName));
@@ -22,7 +22,7 @@ Resource call(String resourceName) {
   @return Lockable-resource or null when does not exists.
   NonCPS because the LockableResource is not serializable.
 */
-@NonCPS
+//@NonCPS
 @CheckForNull
 Resource find(String resourceName) {
   return new Resource(RM.getResource(resourceName));
@@ -33,7 +33,7 @@ Resource find(String resourceName) {
   @return Lockable-resource or null when does not exists.
   NonCPS because the LockableResource is not serializable.
 */
-@NonCPS
+//@NonCPS
 List<Resource> find(List<String> resourceNames) {
   return Resource.toSafeList(RM.getResources(resourceNames));
 }
@@ -43,7 +43,7 @@ List<Resource> find(List<String> resourceNames) {
   @return Lockable-resource or null when does not exists.
   NonCPS because the LockableResource is not serializable.
 */
-@NonCPS
+//@NonCPS
 List<Resource> find(ResourceLabel resourceLabel, int quantity = 0) {
   return Resource.toSafeList(RM.getResources(resourceLabel, ['quantity' : quantity]));
 }
@@ -53,7 +53,7 @@ List<Resource> find(ResourceLabel resourceLabel, int quantity = 0) {
   @return Lockable-resource or null when does not exists.
   NonCPS because the LockableResource is not serializable.
 */
-@NonCPS
+//@NonCPS
 List<Resource> find(ResourceLabel resourceLabel, Map opts) {
   return Resource.toSafeList(RM.getResources(resourceLabel, opts));
 }
@@ -63,7 +63,7 @@ List<Resource> find(ResourceLabel resourceLabel, Map opts) {
   @return Lockable-resource or null when does not exists.
   NonCPS because the LockableResource is not serializable.
 */
-@NonCPS
+//@NonCPS
 List<Resource> find(int quantity, Closure closure) {
   return Resource.toSafeList(RM.getResources(closure, ['quantity' : quantity]));
 }
@@ -73,7 +73,7 @@ List<Resource> find(int quantity, Closure closure) {
   @return Lockable-resource or null when does not exists.
   NonCPS because the LockableResource is not serializable.
 */
-@NonCPS
+//@NonCPS
 List<Resource> find(Map opts, Closure closure) {
   return Resource.toSafeList(RM.getResources(closure, opts));
 }
@@ -83,19 +83,19 @@ List<Resource> find(Map opts, Closure closure) {
   @return Lockable-resource or null when does not exists.
   NonCPS because the LockableResource is not serializable.
 */
-@NonCPS
+//@NonCPS
 List<Resource> find(Closure closure) {
   return Resource.toSafeList(RM.getResources(closure, ['quantity' : 0]));
 }
 
 //-----------------------------------------------------------------------------
-@NonCPS
+//@NonCPS
 List<Resource> getAll() {
   return Resource.toSafeList(RM.getResources());
 }
 
 //------------------------------------------------------------------------------
-@NonCPS
+//@NonCPS
 boolean isFree(@NonNull String resourceName) {
   Resource resource = new Resource(resourceName);
   return resource.isFree();

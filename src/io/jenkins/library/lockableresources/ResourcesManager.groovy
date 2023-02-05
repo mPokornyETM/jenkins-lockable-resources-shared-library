@@ -21,7 +21,7 @@ class ResourcesManager  implements Serializable {
     @return Lockable-resource or null when does not exists.
     NonCPS because the LockableResource is not serializable.
   */
-  @NonCPS
+  //@NonCPS
   @Restricted(NoExternalUse.class)
   @CheckForNull
   public static LockableResource getResource(@NonNull String resourceName) {
@@ -33,7 +33,7 @@ class ResourcesManager  implements Serializable {
     @return Lockable-resource or null when does not exists.
     NonCPS because the LockableResource is not serializable.
   */
-  @NonCPS
+  //@NonCPS
   @Restricted(NoExternalUse.class)
   public static LockableResource getResourceOrDie(@NonNull String resourceName) {
     LockableResource resource = ResourcesManager.getResource(resourceName);
@@ -48,7 +48,7 @@ class ResourcesManager  implements Serializable {
     @return Lockable-resource or null when does not exists.
     NonCPS because the LockableResource is not serializable.
   */
-  @NonCPS
+  //@NonCPS
   @Restricted(NoExternalUse.class)
   public static List<LockableResource> getResources(@NonNull List<String> resourceNames) {
     List<LockableResource> retList = [];
@@ -59,7 +59,7 @@ class ResourcesManager  implements Serializable {
   }
 
   //---------------------------------------------------------------------------
-  @NonCPS
+  //@NonCPS
   @Restricted(NoExternalUse.class)
   public static List<LockableResource> getResources(ResourceLabel resourceLabel, Map opts = [:]) {
     opts = Utils.fixNullMap(opts);
@@ -68,7 +68,7 @@ class ResourcesManager  implements Serializable {
   }
 
   //---------------------------------------------------------------------------
-  @NonCPS
+  //@NonCPS
   @Restricted(NoExternalUse.class)
   public static List<LockableResource> getResources(Closure closure, Map opts = [:]) {
     opts = Utils.fixNullMap(opts);
@@ -85,21 +85,21 @@ class ResourcesManager  implements Serializable {
   }
 
   //---------------------------------------------------------------------------
-  @NonCPS
+  //@NonCPS
   @Restricted(NoExternalUse.class)
   public static List<LockableResource> getAllResources() {
     return LRM.get().getResources();
   }
 
   //---------------------------------------------------------------------------
-  @NonCPS
+  //@NonCPS
   @Restricted(NoExternalUse.class)
   public static void save() {
     LRM.get().save();
   }
 
   //---------------------------------------------------------------------------
-  @NonCPS
+  //@NonCPS
   @Restricted(NoExternalUse.class)
   public static boolean resourceExists(@NonNull String resourceName) {
     return ResourcesManager.getResource(resourceName) != null;
@@ -107,7 +107,7 @@ class ResourcesManager  implements Serializable {
 
 
   //---------------------------------------------------------------------------
-  @NonCPS
+  //@NonCPS
   private static List<LockableResource> reOrder(List<LockableResource> allMatches, Map opts) {
     opts = Utils.fixNullMap(opts);
 
@@ -143,7 +143,7 @@ class ResourcesManager  implements Serializable {
   }
 
   //---------------------------------------------------------------------------
-  @NonCPS
+  //@NonCPS
   private static List<LockableResource> sort(List<LockableResource> resources, def orderBy) {
     // get current state and property of resources to eliminate
     // java.lang.IllegalArgumentException: Comparison method violates its general contract!

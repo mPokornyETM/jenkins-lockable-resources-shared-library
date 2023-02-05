@@ -6,7 +6,7 @@ class Utils {
   public static def globalScope = null;
 
   //---------------------------------------------------------------------------
-  @NonCPS
+  //@NonCPS
   public static Map fixNullMap(Map map) {
     if (map == null) {
       return [:];
@@ -15,7 +15,7 @@ class Utils {
   }
 
   //---------------------------------------------------------------------------
-  @NonCPS
+  //@NonCPS
   public static echo(String msg) {
     if (globalScope == null) {
       return;

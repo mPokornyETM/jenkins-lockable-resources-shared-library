@@ -16,13 +16,13 @@ class ResourceLabel implements Serializable {
   }
 
   //---------------------------------------------------------------------------
-  @NonCPS
+  //@NonCPS
   public String toString() {
     return this.name;
   }
 
   //---------------------------------------------------------------------------
-  @NonCPS
+  //@NonCPS
   public String getName() {
     return this.name;
   }
