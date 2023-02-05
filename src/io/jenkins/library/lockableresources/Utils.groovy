@@ -15,6 +15,7 @@ class Utils {
   }
 
   //---------------------------------------------------------------------------
+  @NonCPS
   public static echo(String msg) {
     if (globalScope == null) {
       return;
