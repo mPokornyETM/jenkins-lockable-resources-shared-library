@@ -23,7 +23,7 @@ void call(final String nodeName, Map opts, Closure closure) {
   } else {
     // your node does not exists, we try to find it as label
     def matched = findNodesByLabel(nodeName, opts);
-    if (matched.size()) {
+    if (matched.size() == 0) {
       throw(new Exception('No matches for: ' + nodeName));
     }
 
@@ -49,7 +49,24 @@ List<Resource> findNodesByLabel(String labelExpression, Map opts) {
   if (opts.quantity == null) {
     opts.quantity = 1; // per default lock only 1 node
   }
-  return lockableResource.find(opts) {it -> echo it.name + ' N' + it.hasLabel(ResourceLabel.NODE_LABEL) + ' M' + it.matches(parsed); return it.hasLabel(ResourceLabel.NODE_LABEL) && it.matches(parsed)};
+
+  if (opts.randomize == null) {
+    opts.randomize = true; // make sense to randomize the node usage per default
+  }
+  if (opts.orderBy == null) {
+    // default node-resource order
+    opts.orderBy = [
+      { !it.isFree }
+      // defensive check, shall never happen, but nobody know
+      { it.node != null }
+      // all free nodes first
+      { it.node != null && !it.node.isOnline },
+      // 0 executors means, there is something running
+      { it.node != null && !it.node.countIdle }
+    ];
+  }
+  
+  return lockableResource.find(opts) {it -> return it.hasLabel(ResourceLabel.NODE_LABEL) && it.matches(parsed)};
 }
 
 //-----------------------------------------------------------------------------

@@ -115,19 +115,14 @@ class ResourcesManager  implements Serializable {
 
     Utils.echo('allMatches: ' + allMatches + ' opts: ' + opts);
 
-    final int expectedCount = opts.expectedCount != null ? opts.expectedCount : 0;
-    
-    if (expectedCount == 0) {
-      return allMatches;
-    }
+    final int quantity = opts.quantity != null ? opts.quantity : 0;
+    final int minCount = opts.minCount != null ? opts.minCount : quantity;
 
-    final int minCount = opts.minCount != null ? opts.minCount : expectedCount;
-
-    if (minCount > expectedCount) {
-      throw(new Exception("Parameter mismatch minCount $minCount vs expectedCount $expectedCount"));
+    if (minCount > quantity) {
+      throw(new Exception("Parameter mismatch minCount $minCount vs quantity $quantity"));
     }
-    if (minCount < allMatches.size()) {
-      throw(new Exception("You has expected $expectedCount, but there are currently only $allMatches.size"));
+    if (minCount > allMatches.size()) {
+      throw(new Exception("You has expected $quantity resource(s), but there are currently only $allMatches.size"));
     }
 
     if (opts.randomize != null) {
@@ -138,8 +133,13 @@ class ResourcesManager  implements Serializable {
       allMatches = sort(allMatches, opts.orderBy);
     }
 
+    if (quantity == 0) {
+      // return all possible resources
+      return allMatches;
+    }
+
     List<LockableResource> retList = [];
-    for(int i = 0; i < expectedCount; i++) {
+    for(int i = 0; i < quantity; i++) {
       retList.push(allMatches[i]);
     }
 

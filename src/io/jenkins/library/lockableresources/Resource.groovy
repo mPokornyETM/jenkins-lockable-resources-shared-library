@@ -158,7 +158,7 @@ class Resource implements Serializable {
   //----------------------------------------------------------------------------
   @NonCPS
   public Map toMap() {
-    return [
+    Map map = [
       'name' : this.name,
       'description' : this.description,
       'note' : this.note,
@@ -172,6 +172,30 @@ class Resource implements Serializable {
       'isStolen' : this.resource.isStolen(),
       'isQueued' : this.resource.isQueued()
     ];
+
+    if (this.hasLabel(ResourceLabel.NODE_LABEL)) {
+      Computer computer = jenkins.model.Jenkins.instance.getComputer(nodeName);
+      if (computer != null) {
+        Map compMap = [:];
+        compMap['isOnline'] = computer.isOnline();
+        // object of OfflineCause or null
+        compMap['offlineCause'] = computer.getOfflineCause();
+        // The time when this computer last became idle.
+        compMap['idleStartMilliseconds'] = computer.getIdleStartMilliseconds();
+        // true if this computer has some idle executors that can take more workload
+        compMap['isPartiallyIdle'] = computer.isPartiallyIdle();
+        // true if all the executors of this computer are idle.
+        compMap['isIdle'] = computer.isPartiallyIdle();
+        // The current size of the executor pool for this computer.
+        compMap['countExecutors'] = computer.countExecutors();
+        // The number of executors that are doing some work right now.
+        compMap['countBusy'] = computer.countBusy();
+        // The number of idle {@link Executor}s that can start working immediately.
+        compMap['countIdle'] = computer.countIdle();
+
+        map['node'] = compMap;
+      }
+    }
   }
 
   //----------------------------------------------------------------------------
