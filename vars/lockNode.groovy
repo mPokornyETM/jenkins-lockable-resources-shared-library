@@ -49,7 +49,7 @@ List<Resource> findNodesByLabel(String labelExpression, Map opts) {
   if (opts.quantity == null) {
     opts.quantity = 1; // per default lock only 1 node
   }
-  return lockableResource.find(opts) {it -> echo it.name; return it.hasLabel(ResourceLabel.NODE_LABEL) && it.matches(parsed)};
+  return lockableResource.find(opts) {it -> echo it.name + ' N' + it.hasLabel(ResourceLabel.NODE_LABEL) + ' M' + it.matches(parsed); return it.hasLabel(ResourceLabel.NODE_LABEL) && it.matches(parsed)};
 }
 
 //-----------------------------------------------------------------------------
