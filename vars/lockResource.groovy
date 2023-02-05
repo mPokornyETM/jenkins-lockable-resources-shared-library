@@ -4,6 +4,7 @@
 import edu.umd.cs.findbugs.annotations.NonNull;
 import io.jenkins.library.lockableresources.Resource;
 import io.jenkins.library.lockableresources.ResourcesManager;
+import io.jenkins.library.lockableresources.Utils;
 
 //-----------------------------------------------------------------------------
 void call(@NonNull String resourceName, @NonNull Closure closure) {
@@ -15,6 +16,7 @@ void call(@NonNull String resourceName, @NonNull Closure closure) {
 // @NonCPS
 void call(@NonNull String resourceName, @NonNull Map opts, @NonNull Closure closure) {
   Resource resource = new Resource(resourceName);
+  opts = Utils.fixNullMap(opts);
 
   if (opts.createOnDemand != null && !ResourcesManager.resourceExists(resourceName)) {
     final Map props = (opts.createOnDemand instanceof Map) ? opts.createOnDemand : [:];

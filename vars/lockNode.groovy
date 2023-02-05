@@ -16,6 +16,7 @@ void call(final String nodeName, Map opts, Closure closure) {
   if (Jenkins.get().getNode(nodeName) != null) {
     mirrorNodesToLockableResources(nodeName, opts.mirrorOptions);
     opts.remove('mirrorOptions');
+    echo("Trying to acquire lock on node [$nodeName]");
     lockResource(nodeName, opts) {
       inLockScope(nodeName, opts, closure);
     }
@@ -29,10 +30,12 @@ void call(final String nodeName, Map opts, Closure closure) {
     for(int i = 0; i < matched.size(); i++) {
       String matchedNode = matched[i];
       if (i == (matched.size() -1)) {
+        echo("Trying to acquire lock on node [$nodeName]");
         lockResource(matchedNode, opts) {
           inLockScope(matchedNode, opts, closure);
         }
       } else {
+        echo("Trying to acquire lock on node [$nodeName]");
         lockResource(matchedNode, opts) {}
       }
     }
@@ -50,9 +53,12 @@ List<Resource> findNodesByLabel(String labelExpression, Map opts) {
 
 //-----------------------------------------------------------------------------
 void inLockScope(String nodeName, Map opts, Closure closure) {
+  echo("Lock acquired on node [$nodeName]");
   if (opts.allocateExecutor) {
     opts.remove('allocateExecutor');
+    echo("Trying to acquire executor on node [$nodeName]");
     node(nodeName) {
+      echo("Executor acquired on node [$nodeName]");
       inLockScope(nodeName, opts);
     }
     return;
