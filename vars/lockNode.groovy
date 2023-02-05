@@ -58,7 +58,7 @@ List<Resource> findNodesByLabel(String labelExpression, Map opts) {
   if (opts.orderBy == null) {
     opts.orderBy = true;
   }
-  
+  echo "lockableResource.find"
   return lockableResource.find(opts) {it -> return it.hasLabel(ResourceLabel.NODE_LABEL) && it.matches(parsed)};
 }
 
