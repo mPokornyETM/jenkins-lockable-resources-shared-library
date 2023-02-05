@@ -61,7 +61,7 @@ List<Resource> findNodesByLabel(String labelExpression, Map opts) {
       { it.node != null && !it.node.isOnline },
       // 0 executors means, there is something running
       { it.node != null ? -it.node.countIdle : null }, 
-      // keep last idle on the end
+      // keep last idle node on the end
       { it.node != null ? it.node.idleStartMilliseconds : null }
     ];
   }
