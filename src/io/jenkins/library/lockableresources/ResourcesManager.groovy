@@ -117,17 +117,18 @@ Utils.echo('getResources 3');
     if (minCount > allMatches.size()) {
       throw(new Exception("You has expected $quantity resource(s), but there are currently only $allMatches.size"));
     }
-
+Utils.echo('opts.randomize ' + opts.randomize);
     if (opts.randomize != null) {
       Collections.shuffle(allMatches);
     }
-
+Utils.echo('opts.orderBy ' + opts.orderBy);
     if (opts.orderBy != null) {
-      allMatches = sort(allMatches, opts.orderBy);
+      allMatches = sort(allMatches);
     }
 
     if (quantity == 0) {
       // return all possible resources
+      Utils.echo('return all possible resources');
       return allMatches;
     }
 
@@ -136,11 +137,12 @@ Utils.echo('getResources 3');
       retList.push(allMatches[i]);
     }
 
+    Utils.echo('return ' + quantity + ' possible resources');
     return retList;
   }
 
   //---------------------------------------------------------------------------
-  private static List<Resource> sort(List<Resource> resources, def orderBy) {
+  private static List<Resource> sort(List<Resource> resources) {
     // get current state and property of resources to eliminate
     // java.lang.IllegalArgumentException: Comparison method violates its general contract!
     // otherwise nobody can grant, that the resource state/property has been not changed
@@ -153,7 +155,7 @@ Utils.echo('getResources 3');
     }
 
     // in extra function, because of NonCPS
-    _sort(list, orderBy);
+    _sort(list);
 
     resources = [];
     for (Map map : list) {
@@ -163,30 +165,20 @@ Utils.echo('getResources 3');
     return resources;
   }
 
-  @NonCPS _comp(Closure cl) {
-    return cl;
-  }
-
   //----------------------------------------------------------------------------
   // NonCps because sort is NON-CPS. See https://issues.jenkins.io/browse/JENKINS-44924
   @NonCPS
-  private static _sort(List<Map>list, def orderBy) {
-    // def orderByDef = new OrderBy(orderBy);
-    // list.sort(orderBy);
+  private static _sort(List<Map>list) {
     list.sort(new OrderBy([
         { !it.isFree },
         // all free nodes first
         { it.node != null && !it.node.isOnline },
         // 0 executors means, there is something running
-        { it.node != null ? -it.node.countIdle : null }, 
+        { it.node != null ? -it.node.countIdle : null },
         // keep last idle node on the end
         { it.node != null ? it.node.idleStartMilliseconds : null }
       ])
     );
-  }
-
-  @NonCPS private static _orderByClosure(orderBy) {
-    new OrderBy(orderBy);
   }
 
 
