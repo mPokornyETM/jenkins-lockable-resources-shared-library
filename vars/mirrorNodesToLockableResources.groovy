@@ -39,6 +39,7 @@ void call() {
  Also is the question what shall happens, when is currently locked and node does not
  exists?
 */
+@NonCPS
 void call(@NonNull Map opts) {
 
 echo 'getLabels ' + Jenkins.get().getLabels();
