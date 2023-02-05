@@ -231,6 +231,8 @@ class Resource implements Serializable {
     for(ResourceLabel resourceLabel : this.getLabels()) {
       ls.push(resourceLabel.getName());
     }
+    Utils.echo('labelExpression ' + labelExpression);
+    Utils.echo('ls ' + ls);
 
     return _matches(labelExpression, ls);
   }
