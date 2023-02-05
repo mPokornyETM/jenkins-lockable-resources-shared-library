@@ -27,13 +27,13 @@ void call(final String nodeName, Map opts, Closure closure) {
     }
     
     for(int i = 0; i < matched.size(); i++) {
-      nodeName = matched[i];
+      String matchedNode = matched[i];
       if (i == (matched.size() -1)) {
-        lockResource(nodeName, opts) {
-          inLockScope(nodeName, opts, closure);
+        lockResource(matchedNode, opts) {
+          inLockScope(matchedNode, opts, closure);
         }
       } else {
-        lockResource(nodeName, opts) {}
+        lockResource(matchedNode, opts) {}
       }
     }
   }
