@@ -230,6 +230,6 @@ class Resource implements Serializable {
     for(ResourceLabel resourceLabel : this.getLabels()) {
       atomLabels.push(new LabelAtom(resourceLabel.getName()));
     }
-    return parsed.matches(atomLabels);
+    return labelExpression.matches(atomLabels);
   }
 }
