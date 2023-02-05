@@ -1,6 +1,7 @@
 #!groovy
 
 import jenkins.model.Jenkins;
+import io.jenkins.library.lockableresources.ResourceLabel;
 
 //-----------------------------------------------------------------------------
 void call(String nodeName, Closure closure) {
@@ -22,7 +23,7 @@ void call(final String nodeName, Map opts, Closure closure) {
     // your node does not exists, we try to find it as label
     def matched = findNodesByLabel(nodeName, opts);
     if (matched.size()) {
-      throw(new Exception('Nom matches for: ' + nodeName));
+      throw(new Exception('No matches for: ' + nodeName));
     }
     
     for(int i = 0; i < matched.size(); i++) {
@@ -43,7 +44,7 @@ List<Resource> findNodesByLabel(String labelExpression, Map opts) {
   if (opts.quantity == null) {
     opts.quantity = 1; // per default lock only 1 node
   } 
-  return lockableResource.find(opts) {it -> return it.matches(parsed)};
+  return lockableResource.find(opts) {it -> return it.hasLabel(ResourceLabel.NODE_LABEL) && it.matches(parsed)};
 }
 
 //-----------------------------------------------------------------------------
