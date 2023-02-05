@@ -14,7 +14,7 @@ void call(final String nodeName, Map opts, Closure closure) {
   opts = Utils.fixNullMap(opts);
 
   if (Jenkins.get().getNode(nodeName) != null) {
-    mirrorNodesToLockableResources(nodeName, opts.mirrorOptions);
+    mirrorNodesToLockableResources(nodeName, Utils.fixNullMap(opts.mirrorOptions));
     opts.remove('mirrorOptions');
     echo("Trying to acquire lock on node [$nodeName]");
     lockResource(nodeName, opts) {
