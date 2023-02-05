@@ -226,11 +226,15 @@ class Resource implements Serializable {
     return labelsString.trim();
   }
 
+  public boolean matches(Label labelExpression) {
+    return matches(labelExpression, this.getLabels());
+  }
+
   // NonCPS because LabelAtom is not serializable
   @NonCPS
-  public boolean matches(Label labelExpression) {
+  private boolean matches(Label labelExpression, def _labels) {
     Collection<LabelAtom> atomLabels =  [];
-    for(ResourceLabel resourceLabel : this.getLabels()) {
+    for(ResourceLabel resourceLabel : _labels) {
       atomLabels.push(new LabelAtom(resourceLabel.getName()));
     }
     return labelExpression.matches(atomLabels);
