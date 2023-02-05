@@ -80,6 +80,9 @@ class ResourcesManager  implements Serializable {
         matches.push(resource);
       }
     }
+
+    Utils.echo('matches: ' + matches);
+    
     return filter(matches, opts);
   }
 
@@ -110,14 +113,20 @@ class ResourcesManager  implements Serializable {
   private static List<LockableResource> filter(List<LockableResource> allMatches, Map opts) {
     opts = Utils.fixNullMap(opts);
 
-    final int expectedCount = opts.expectedCount != null ? opts.expectedCount : 0;
-    final int minCount = opts.minCount != null ? opts.minCount : expectedCount;
+    Utils.echo('allMatches: ' + allMatches + ' opts: ' + opts);
 
+    final int expectedCount = opts.expectedCount != null ? opts.expectedCount : 0;
+    
     if (expectedCount == 0) {
       return allMatches;
     }
 
-    if (expectedCount < allMatches.size()) {
+    final int minCount = opts.minCount != null ? opts.minCount : expectedCount;
+
+    if (minCount > expectedCount) {
+      throw(new Exception("Parameter mismatch minCount $minCount vs expectedCount $expectedCount"));
+    }
+    if (minCount < allMatches.size()) {
       throw(new Exception("You has expected $expectedCount, but there are currently only $allMatches.size"));
     }
 
