@@ -174,7 +174,7 @@ class Resource implements Serializable {
     ];
 
     if (this.hasLabel(ResourceLabel.NODE_LABEL)) {
-      Computer computer = jenkins.model.Jenkins.instance.getComputer(nodeName);
+      Computer computer = jenkins.model.Jenkins.instance.getComputer(this.name);
       if (computer != null) {
         Map compMap = [:];
         compMap['isOnline'] = computer.isOnline();
