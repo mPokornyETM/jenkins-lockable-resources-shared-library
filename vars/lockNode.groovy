@@ -54,16 +54,7 @@ List<Resource> findNodesByLabel(String labelExpression, Map opts) {
     opts.randomize = true; // make sense to randomize the node usage per default
   }
   if (opts.orderBy == null) {
-    // default node-resource order
-    opts.orderBy = [
-      { !it.isFree }/*,
-      // all free nodes first
-      { it.node != null && !it.node.isOnline },
-      // 0 executors means, there is something running
-      { it.node != null ? -it.node.countIdle : null }, 
-      // keep last idle node on the end
-      { it.node != null ? it.node.idleStartMilliseconds : null }*/
-    ];
+    opts.orderBy = true;
   }
   
   return lockableResource.find(opts) {it -> return it.hasLabel(ResourceLabel.NODE_LABEL) && it.matches(parsed)};
