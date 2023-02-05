@@ -176,7 +176,7 @@ class ResourcesManager  implements Serializable {
     list.sort(_orderByClosure(orderBy));
   }
 
-  @NonCPS _orderByClosure(orderBy) {
+  @NonCPS private static _orderByClosure(orderBy) {
     new OrderBy(orderBy);
   }
 
