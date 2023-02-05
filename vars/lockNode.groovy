@@ -56,9 +56,9 @@ List<Resource> findNodesByLabel(String labelExpression, Map opts) {
   if (opts.orderBy == null) {
     // default node-resource order
     opts.orderBy = [
-      { !it.isFree }
+      { !it.isFree },
       // defensive check, shall never happen, but nobody know
-      { it.node != null }
+      { it.node != null },
       // all free nodes first
       { it.node != null && !it.node.isOnline },
       // 0 executors means, there is something running
