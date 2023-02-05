@@ -137,7 +137,7 @@ Utils.echo('opts.orderBy ' + opts.orderBy);
       retList.push(allMatches[i]);
     }
 
-    Utils.echo('return ' + quantity + ' possible resources');
+    Utils.echo('return ' + quantity + ' possible resources: ' + retList.class.name);
     return retList;
   }
 
