@@ -150,7 +150,7 @@ class ResourcesManager  implements Serializable {
 
   //---------------------------------------------------------------------------
   @NonCPS
-  private static void sort(List<LockableResource> resources, def orderBy) {
+  private static List<LockableResource> sort(List<LockableResource> resources, def orderBy) {
     // get current state and property of resources to eliminate
     // java.lang.IllegalArgumentException: Comparison method violates its general contract!
     // otherwise nobody can grant, that the resource state/property has been not changed
