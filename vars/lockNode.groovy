@@ -62,7 +62,7 @@ List<Resource> findNodesByLabel(String labelExpression, Map opts) {
       // 0 executors means, there is something running
       { it.node != null ? -it.node.countIdle : null }, 
       // keep last idle on the end
-      { it.node != null ? -it.node.idleStartMilliseconds : null }
+      { it.node != null ? it.node.idleStartMilliseconds : null }
     ];
   }
   
