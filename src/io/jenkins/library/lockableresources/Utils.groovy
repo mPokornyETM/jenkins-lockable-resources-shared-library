@@ -3,6 +3,8 @@ package io.jenkins.library.lockableresources;
 
 class Utils {
 
+  public static def globalScope = null;
+
   //---------------------------------------------------------------------------
   @NonCPS
   public static Map fixNullMap(Map map) {
@@ -10,5 +12,13 @@ class Utils {
       return [:];
     }
     return map;
+  }
+
+  //---------------------------------------------------------------------------
+  public static echo(String msg) {
+    if (globalScope == null) {
+      return;
+    }
+    globalScope.echo(msg);
   }
 }

@@ -75,6 +75,7 @@ class ResourcesManager  implements Serializable {
     List<LockableResource> matches = [];
     for(LockableResource resource : getAllResources()) {
       boolean match = closure(new Resource(resource));
+      Utils.echo(resource.name + ' ' + match.class.name + ' ' + match);
       if (match) {
         matches.push(resource);
       }
