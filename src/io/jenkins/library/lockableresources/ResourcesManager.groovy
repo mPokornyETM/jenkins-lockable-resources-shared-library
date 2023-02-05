@@ -172,9 +172,14 @@ class ResourcesManager  implements Serializable {
   private static _sort(List<Map>list, def orderBy) {
     // def orderByDef = new OrderBy(orderBy);
     // list.sort(orderBy);
-    list.sort(new OrderBy({ !it.isFree }));
-    list.sort(new OrderBy(orderBy));
+    // list.sort(new OrderBy({ !it.isFree }));
+    list.sort(_orderByClosure(orderBy));
   }
+
+  @NonCPS _orderByClosure(orderBy) {
+    new OrderBy(orderBy);
+  }
+
 
   //----------------------------------------------------------------------------
   //maybe @NonCPS
