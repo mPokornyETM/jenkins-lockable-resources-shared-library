@@ -49,7 +49,7 @@ Label parsed = Label.parseExpression('os:Windows && LabelA');
 // echo 'getMethods ' + parsed.class.getMethods().join('\n');
 
   // synchronized over all jobs
-  lock('mirrorNodes') {
+  lockResource('mirrorNodes') {
     // mirror existing nodes
     List<String> mirrored = [];
     jenkins.model.Jenkins.instance.computers.each { c ->
