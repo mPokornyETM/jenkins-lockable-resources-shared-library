@@ -145,13 +145,13 @@ class Resource implements Serializable {
 
   //----------------------------------------------------------------------------
   @NonCPS
-  public void hasLabel(@NonNull String label) {
+  public boolean hasLabel(@NonNull String label) {
     return this.resource.hasLabel(label);
   }
 
   //----------------------------------------------------------------------------
   @NonCPS
-  public void hasLabel(@NonNull ResourceLabel label) {
+  public boolean hasLabel(@NonNull ResourceLabel label) {
     return hasLabel(label.getName());
   }
 
