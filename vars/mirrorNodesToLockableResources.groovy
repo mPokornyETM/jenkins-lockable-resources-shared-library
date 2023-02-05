@@ -42,7 +42,7 @@ void call(@NonNull Map opts) {
 echo 'getLabels ' + Jenkins.get().getLabels();
 echo 'getLabelAtoms ' + Jenkins.get().getLabelAtoms();
 def object = Label.parseExpression('os:Windows && LabelA');
-echo object.class.name + ' parseExpression ' + object
+echo object.class.name + ' parseExpression ' + object.toString();
 echo 'getMethods ' + object.class.getMethods();
 
   // synchronized over all jobs
