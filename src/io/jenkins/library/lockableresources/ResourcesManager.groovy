@@ -67,16 +67,17 @@ class ResourcesManager  implements Serializable {
   //@NonCPS
   @Restricted(NoExternalUse.class)
   public static List<Resource> getResources(Closure closure, Map opts = [:]) {
+    Utils.echo('getResources 1');
     opts = Utils.fixNullMap(opts);
     List<Resource> matches = [];
-
+Utils.echo('getResources 2');
     for(Resource resource : getAllResources()) {
       boolean match = closure(resource);
       if (match) {
         matches.push(resource);
       }
     }
-
+Utils.echo('getResources 3');
     return reOrder(matches, opts);
   }
 
