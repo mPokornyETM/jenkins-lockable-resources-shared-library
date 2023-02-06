@@ -30,6 +30,7 @@ void call(final String nodeName, Map opts, Closure closure) {
     for(Resource resource : matched) {
       matchedNames.push(resource.getName());
     }
+    echo 'matchedNames: ' + matchedNames
     if (matched.size() == 0) {
       throw(new Exception('No matches for: ' + nodeName));
     } else if (matched.size() == 1) {

@@ -13,13 +13,15 @@ import org.jenkins.plugins.lockableresources.LockableResource;
 import org.kohsuke.accmod.Restricted;
 import org.kohsuke.accmod.restrictions.NoExternalUse;
 
+//-----------------------------------------------------------------------------
 // !!!!! do not use outside this library !!!!
 class ResourcesManager  implements Serializable {
 
   //---------------------------------------------------------------------------
-  /**
+  /** Get Resource by resource name.
+
+    @return Resource when exists, null otherwise.
   */
-  /** */
   @Restricted(NoExternalUse.class)
   @CheckForNull
   public static Resource getResource(@NonNull String resourceName) {
@@ -31,9 +33,10 @@ class ResourcesManager  implements Serializable {
   }
 
   //---------------------------------------------------------------------------
-  /**
+  /** Get Resource by resource name or die.
+
+    @return Resource when exists, raise exception otherwise.
   */
-  /** */
   @Restricted(NoExternalUse.class)
   public static Resource getResourceOrDie(@NonNull String resourceName) {
     Resource resource = ResourcesManager.getResource(resourceName);
@@ -44,9 +47,13 @@ class ResourcesManager  implements Serializable {
   }
 
   //---------------------------------------------------------------------------
-  /**
+  /** Get list of resources by resource names.
+
+    @return Return list of resources matched by names. It might be empty, but
+            newer null.
+
+    @exception When one resource does not exists. See also Resource.getResourceOrDie()
   */
-  /** */
   @Restricted(NoExternalUse.class)
   public static List<Resource> getResources(@NonNull List<String> resourceNames) {
     List<Resource> retList = [];
@@ -57,14 +64,26 @@ class ResourcesManager  implements Serializable {
   }
 
   //---------------------------------------------------------------------------
-  /** */
+  /** Get resources matched by resource label.
+
+    @param resourceLabel Label to be search.
+    @param opts See also ResourceLabel.reOrder();
+    @return Return list of resources matched by resource label. It might be empty,
+            but newer null.
+  */
   @Restricted(NoExternalUse.class)
   public static List<Resource> getResources(ResourceLabel resourceLabel, Map opts = [:]) {
     return reOrder(toSafeList(LRM.get().getResourcesWithLabel(resourceLabel.name, [:])), opts);
   }
 
   //---------------------------------------------------------------------------
-  /** */
+  /** Get resources matched by Groovy expression.
+
+    @param closure Groovy expression.
+    @param opts See also ResourceLabel.reOrder();
+    @return Return list of resources matched by resource label. It might be empty,
+            but newer null.
+  */
   @Restricted(NoExternalUse.class)
   public static List<Resource> getResources(Closure closure, Map opts = [:]) {
     opts = Utils.fixNullMap(opts);
@@ -81,21 +100,26 @@ class ResourcesManager  implements Serializable {
   }
 
   //---------------------------------------------------------------------------
-  /** */
+  /** Get all resources.
+  */
   @Restricted(NoExternalUse.class)
   public static List<Resource> getAllResources() {
     return toSafeList(LRM.get().getResources());
   }
 
   //---------------------------------------------------------------------------
-  /** */
+  /** Save all resources.
+  */
   @Restricted(NoExternalUse.class)
   public static void save() {
     LRM.get().save();
   }
 
   //---------------------------------------------------------------------------
-  /** */
+  /** Check if resource exists.
+
+    @param resourceName Resource name.
+  */
   @Restricted(NoExternalUse.class)
   public static boolean resourceExists(@NonNull String resourceName) {
     return LRM.get().fromName(resourceName) != null;
@@ -184,7 +208,9 @@ class ResourcesManager  implements Serializable {
   public static List<Resource> toSafeList(@NonNull List<LockableResource> list) {
     List<Resource> ret = [];
     for(LockableResource r : list) {
-      ret.push(new Resource(r));
+      if (r != null && r.getName() != null) {
+        ret.push(new Resource(r));
+      }
     }
     return ret;
   }
