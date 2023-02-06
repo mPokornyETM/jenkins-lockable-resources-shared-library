@@ -30,11 +30,17 @@ void call(@NonNull String resourceName, @NonNull Map opts, @NonNull Closure clos
 // createOnDemand: create resource when does not exists
 // //@NonCPS
 void call(@NonNull List<String> resourceNames, @NonNull Map opts, @NonNull Closure closure) {
+  lockResource(lockableResource.find(resourceNames), opts, closure);
+}
+
+//-----------------------------------------------------------------------------
+void call(@NonNull List<Resource> resources, @NonNull Map opts, @NonNull Closure closure) {
+}
   opts = Utils.fixNullMap(opts);
-echo "try mul $resourceNames"
-  List<Resource> resources = lockableResource.find(resourceNames);
   if (opts.createOnDemand) {
     for(Resource resource : resources) {
+        
+echo "try mul $resource.name"
       if (!resource.exists()) {
         final Map props = (opts.createOnDemand instanceof Map) ? opts.createOnDemand : [:];
         resource.create(props);
@@ -114,7 +120,7 @@ void _multipleLock(@NonNull List<Resource> resources, @NonNull Map opts, @NonNul
     if (opts.beforeLock != null) {
       opts.beforeLock(resource);
     }
-    echo "variable: $opts.variable, inversePrecedence: $opts.inversePrecedence, skipIfLocked: $opts.skipIfLocked, extra : $extra"
+    echo "variable: $opts.variable"//, inversePrecedence: $opts.inversePrecedence, skipIfLocked: $opts.skipIfLocked, extra : $extra"
     lock(
       variable: opts.variable,
       inversePrecedence: opts.inversePrecedence,
