@@ -114,10 +114,7 @@ void _multipleLock(@NonNull List<Resource> resources, @NonNull Map opts, @NonNul
     if (opts.beforeLock != null) {
       opts.beforeLock(resource);
     }
-    echo "variable: $opts.variable,
-      inversePrecedence: $opts.inversePrecedence,
-      skipIfLocked: $opts.skipIfLocked,
-      extra : $extra"
+    echo "variable: $opts.variable, inversePrecedence: $opts.inversePrecedence, skipIfLocked: $opts.skipIfLocked, extra : $extra"
     lock(
       variable: opts.variable,
       inversePrecedence: opts.inversePrecedence,
