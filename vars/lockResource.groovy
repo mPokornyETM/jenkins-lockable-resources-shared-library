@@ -145,7 +145,8 @@ void _multipleLock(@NonNull List<Resource> resources, @NonNull Map opts, @NonNul
 }
 
 //------------------------------------------------------------------------------
-void _insideLock(@NonNull Resource|List<Resource> resource, @NonNull Map opts, @NonNull Closure closure) {
+// resource might be : Resource|List<Resource>
+void _insideLock(@NonNull def resource, @NonNull Map opts, @NonNull Closure closure) {
 
   if (opts.timeout != null) {
     timeout(opts.timeout) {
