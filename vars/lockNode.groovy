@@ -13,10 +13,13 @@ void call(String nodeName, Closure closure) {
 void call(final String nodeName, Map opts, Closure closure) {
   opts = Utils.fixNullMap(opts);
 
+  Map mirrorOptions = opts.mirrorOptions;
+  Utils.fixNullMap(mirrorOptions);
+
   if (Jenkins.get().getNode(nodeName) != null) {
     echo "mirrorNodesToLockableResources $nodeName"
-    mirrorNodesToLockableResources(nodeName, Utils.fixNullMap(opts.mirrorOptions));
-    opts.remove('mirrorOptions');
+    mirrorNodesToLockableResources(nodeName, mirrorOptions);
+    
     echo("Trying to acquire lock on node [$nodeName]");
     lockResource(nodeName, opts) {
       inLockScope(nodeName, opts, closure);
@@ -27,8 +30,20 @@ void call(final String nodeName, Map opts, Closure closure) {
     List<Resource> matched = findNodesByLabel(nodeName, opts);
     if (matched.size() == 0) {
       throw(new Exception('No matches for: ' + nodeName));
+    } else if (matched.size() == 1) {
+      // exact one node, so call me back recursive, but with exact node name
+      lockNode(matched[0].getName(), opts, closure);
+    } else {
+      // mirror all requested nodes
+      for(Resource resource : matched) {
+        mirrorNodesToLockableResources(resource.getName(), mirrorOptions);
+      }
     }
 
+    echo("Trying to acquire lock on $matched.size node(s) [$nodeName]");
+    lockResource(matched, opts, closure);
+    echo("Trying to acquire lock on $matched.size node(s) [$nodeName]");
+    /*
     for(int i = 0; i < matched.size(); i++) {
       String matchedNode = matched[i].getName();
       if (i == (matched.size() -1)) {
@@ -41,6 +56,7 @@ void call(final String nodeName, Map opts, Closure closure) {
         lockResource(matchedNode, opts) {}
       }
     }
+    */
   }
 }
 

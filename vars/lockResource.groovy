@@ -26,6 +26,38 @@ void call(@NonNull String resourceName, @NonNull Map opts, @NonNull Closure clos
   _lock(resource, opts, closure);
 }
 
+//-----------------------------------------------------------------------------
+// createOnDemand: create resource when does not exists
+// //@NonCPS
+void call(@NonNull List<String> resourceNames, @NonNull Map opts, @NonNull Closure closure) {
+  opts = Utils.fixNullMap(opts);
+
+  List<Resource> resources = lockableResource.find(resourceNames);
+  if (opts.createOnDemand) {
+    for(Resource resource : resources) {
+      if (!resource.exists()) {
+        final Map props = (opts.createOnDemand instanceof Map) ? opts.createOnDemand : [:];
+        resource.create(props);
+      }
+    }
+  }
+  opts.remove('createOnDemand');
+  _multipleLock(resources, opts, closure);
+}
+
+//------------------------------------------------------------------------------
+void _fixDefaultOpts(Map opts) {
+  if (opts.variable == null) {
+    opts.variable = 'LOCKED_RESOURCE';
+  }
+  if (opts.inversePrecedence == null) {
+    opts.inversePrecedence = false;
+  }
+  if (opts.skipIfLocked == null) {
+    opts.skipIfLocked = false;
+  }
+}
+
 //------------------------------------------------------------------------------
 // //@NonCPS
 void _lock(@NonNull String resourceName, @NonNull Map opts, @NonNull Closure closure) {
@@ -36,25 +68,58 @@ void _lock(@NonNull String resourceName, @NonNull Map opts, @NonNull Closure clo
 //------------------------------------------------------------------------------
 // //@NonCPS
 void _lock(@NonNull Resource resource, @NonNull Map opts, @NonNull Closure closure) {
+  
+  _fixDefaultOpts(opts);
 
   try {
     if (opts.beforeLock != null) {
       opts.beforeLock(resource);
     }
-    if (opts.variable == null) {
-      opts.variable = 'LOCKED_RESOURCE';
-    }
-    if (opts.inversePrecedence == null) {
-      opts.inversePrecedence = false;
-    }
-    if (opts.skipIfLocked == null) {
-      opts.skipIfLocked = false;
-    }
+    
     lock(
       resource: resource.getName(),
       variable: opts.variable,
       inversePrecedence: opts.inversePrecedence,
       skipIfLocked: opts.skipIfLocked
+    ) {
+      _insideLock(resource, opts, closure);
+    }
+    if (opts.afterRelease != null) {
+      opts.afterRelease(resource);
+    }
+  } catch (error) {
+    boolean accepted = false;
+    if (opts.onFailure != null) {
+      accepted = opts.onFailure(resource, error)
+    }
+    if (!accepted) {
+      // not handled exception
+      throw error;
+    }
+  }
+}
+
+//------------------------------------------------------------------------------
+// //@NonCPS
+void _multipleLock(@NonNull List<Resource> resources, @NonNull Map opts, @NonNull Closure closure) {
+  
+  _fixDefaultOpts(opts);
+
+  def extra = [];
+  for(Resource resource : resources) {
+    extra.push(resource: resource.getName());
+  }
+
+  try {
+    if (opts.beforeLock != null) {
+      opts.beforeLock(resource);
+    }
+    
+    lock(
+      variable: opts.variable,
+      inversePrecedence: opts.inversePrecedence,
+      skipIfLocked: opts.skipIfLocked,
+      extra : extra
     ) {
       _insideLock(resource, opts, closure);
     }
