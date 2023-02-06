@@ -39,8 +39,7 @@ void lockResources(@NonNull List<Resource> resources, @NonNull Map opts, @NonNul
   opts = Utils.fixNullMap(opts);
   if (opts.createOnDemand) {
     for(Resource resource : resources) {
-        
-echo "try mul $resource.name"
+
       if (!resource.exists()) {
         final Map props = (opts.createOnDemand instanceof Map) ? opts.createOnDemand : [:];
         resource.create(props);
@@ -74,14 +73,14 @@ void _lock(@NonNull String resourceName, @NonNull Map opts, @NonNull Closure clo
 //------------------------------------------------------------------------------
 // /** */
 void _lock(@NonNull Resource resource, @NonNull Map opts, @NonNull Closure closure) {
-  
+
   _fixDefaultOpts(opts);
 
   try {
     if (opts.beforeLock != null) {
       opts.beforeLock(resource);
     }
-    
+
     lock(
       resource: resource.getName(),
       variable: opts.variable,
@@ -108,7 +107,7 @@ void _lock(@NonNull Resource resource, @NonNull Map opts, @NonNull Closure closu
 //------------------------------------------------------------------------------
 // /** */
 void _multipleLock(@NonNull List<Resource> resources, @NonNull Map opts, @NonNull Closure closure) {
-  
+
   _fixDefaultOpts(opts);
 
   def extra = [];
@@ -120,7 +119,7 @@ void _multipleLock(@NonNull List<Resource> resources, @NonNull Map opts, @NonNul
     if (opts.beforeLock != null) {
       opts.beforeLock(resources);
     }
-    echo "variable: $opts.variable"//, inversePrecedence: $opts.inversePrecedence, skipIfLocked: $opts.skipIfLocked, extra : $extra"
+
     lock(
       variable: opts.variable,
       inversePrecedence: opts.inversePrecedence,

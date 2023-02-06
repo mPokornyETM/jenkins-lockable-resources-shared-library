@@ -17,7 +17,7 @@ class Resource implements Serializable {
   private transient LockableResource resource;
 
   //---------------------------------------------------------------------------
-  /** 
+  /**
   */
   public Resource(@NonNull String resourceName) {
     this.resource = LRM.get().fromName(resourceName);

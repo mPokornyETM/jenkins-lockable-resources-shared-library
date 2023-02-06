@@ -7,7 +7,7 @@ import io.jenkins.library.lockableresources.ResourceLabel;
 import io.jenkins.library.lockableresources.ResourcesManager as RM;
 
 //-----------------------------------------------------------------------------
-/** 
+/**
 */
 /** */
 @CheckForNull
@@ -16,7 +16,7 @@ Resource call(String resourceName) {
 }
 
 //-----------------------------------------------------------------------------
-/** 
+/**
 */
 /** */
 @CheckForNull
@@ -25,7 +25,7 @@ Resource find(String resourceName) {
 }
 
 //-----------------------------------------------------------------------------
-/** 
+/**
 */
 /** */
 List<Resource> find(List<String> resourceNames) {
@@ -33,7 +33,7 @@ List<Resource> find(List<String> resourceNames) {
 }
 
 //-----------------------------------------------------------------------------
-/** 
+/**
 */
 /** */
 List<Resource> find(ResourceLabel resourceLabel, int quantity = 0) {
@@ -41,7 +41,7 @@ List<Resource> find(ResourceLabel resourceLabel, int quantity = 0) {
 }
 
 //-----------------------------------------------------------------------------
-/** 
+/**
 */
 /** */
 List<Resource> find(ResourceLabel resourceLabel, Map opts) {
@@ -49,7 +49,7 @@ List<Resource> find(ResourceLabel resourceLabel, Map opts) {
 }
 
 //-----------------------------------------------------------------------------
-/** 
+/**
 */
 /** */
 List<Resource> find(int quantity, Closure closure) {
@@ -57,7 +57,7 @@ List<Resource> find(int quantity, Closure closure) {
 }
 
 //-----------------------------------------------------------------------------
-/** 
+/**
 */
 /** */
 List<Resource> find(Map opts, Closure closure) {
@@ -65,7 +65,7 @@ List<Resource> find(Map opts, Closure closure) {
 }
 
 //-----------------------------------------------------------------------------
-/** 
+/**
 */
 /** */
 List<Resource> find(Closure closure) {

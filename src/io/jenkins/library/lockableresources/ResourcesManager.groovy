@@ -67,17 +67,16 @@ class ResourcesManager  implements Serializable {
   /** */
   @Restricted(NoExternalUse.class)
   public static List<Resource> getResources(Closure closure, Map opts = [:]) {
-    Utils.echo('getResources 1');
     opts = Utils.fixNullMap(opts);
     List<Resource> matches = [];
-Utils.echo('getResources 2');
+
     for(Resource resource : getAllResources()) {
       boolean match = closure(resource);
       if (match) {
         matches.push(resource);
       }
     }
-Utils.echo('getResources 3');
+
     return reOrder(matches, opts);
   }
 
@@ -117,18 +116,17 @@ Utils.echo('getResources 3');
     if (minCount > allMatches.size()) {
       throw(new Exception("You has expected $quantity resource(s), but there are currently only $allMatches.size"));
     }
-Utils.echo('opts.randomize ' + opts.randomize);
+
     if (opts.randomize != null) {
       Collections.shuffle(allMatches);
     }
-Utils.echo('opts.orderBy ' + opts.orderBy);
+
     if (opts.orderBy != null) {
       allMatches = sort(allMatches);
     }
 
     if (quantity == 0) {
       // return all possible resources
-      Utils.echo('return all possible resources');
       return allMatches;
     }
 
@@ -137,7 +135,6 @@ Utils.echo('opts.orderBy ' + opts.orderBy);
       retList.push(allMatches[i]);
     }
 
-    Utils.echo('return ' + quantity + ' possible resources: ' + retList.class.name);
     return retList;
   }
 

@@ -17,16 +17,14 @@ void call(final String nodeName, Map opts, Closure closure) {
   Utils.fixNullMap(mirrorOptions);
 
   if (Jenkins.get().getNode(nodeName) != null) {
-    echo "mirrorNodesToLockableResources $nodeName"
     mirrorNodesToLockableResources(nodeName, mirrorOptions);
-    
+
     echo("Trying to acquire lock on node [$nodeName]");
     lockResource(nodeName, opts) {
       inLockScope(nodeName, opts, closure);
     }
   } else {
     // your node does not exists, we try to find it as label
-    echo "findNodesByLabel $nodeName, $opts"
     List<Resource> matched = findNodesByLabel(nodeName, opts);
     List<String> matchedNames = [];
     for(Resource resource : matched) {
@@ -78,13 +76,13 @@ List<Resource> findNodesByLabel(String labelExpression, Map opts) {
   if (opts.orderBy == null) {
     opts.orderBy = true;
   }
-  echo "lockableResource.find"
+
   return lockableResource.find(opts) {it -> return it.hasLabel(ResourceLabel.NODE_LABEL) && it.matches(parsed)};
 }
 
 //-----------------------------------------------------------------------------
 void inLockScope(String nodeName, Map opts, Closure closure) {
-  
+
   if (opts.allocateExecutor) {
     opts.remove('allocateExecutor');
     echo("Trying to acquire executor on node [$nodeName]");
