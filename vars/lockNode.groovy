@@ -40,9 +40,9 @@ void call(final String nodeName, Map opts, Closure closure) {
       }
     }
 
-    echo("Trying to acquire lock on $matched.size node(s) [$nodeName]");
+    echo('Trying to acquire lock on ' + matched.size() + " node(s) [$nodeName]");
     lockResource(matched, opts, closure);
-    echo("Trying to acquire lock on $matched.size node(s) [$nodeName]");
+    echo('Trying to acquire lock on ' + matched.size() + " node(s) [$nodeName]");
     /*
     for(int i = 0; i < matched.size(); i++) {
       String matchedNode = matched[i].getName();
