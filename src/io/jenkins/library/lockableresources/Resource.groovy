@@ -1,6 +1,7 @@
 #!groovy
 package io.jenkins.library.lockableresources;
 
+import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.model.Label;
 import hudson.model.labels.LabelAtom;
@@ -134,6 +135,7 @@ class Resource implements Serializable {
   /** Get resource note.
     @return Resource note or null when not set.
   */
+  @CheckForNull
   public String getNote() {
     return this.resource.note;
   }
