@@ -12,7 +12,6 @@ import io.jenkins.library.lockableresources.ResourceLabel;
 import org.jenkins.plugins.lockableresources.LockableResource;
 import org.jenkins.plugins.lockableresources.LockableResourcesManager as LRM;
 
-// NonCPS: since LockableResource contains transient variables, they cannot be correctly serialized
 class Resource implements Serializable {
 
   private transient LockableResource resource;
@@ -33,7 +32,7 @@ class Resource implements Serializable {
   }
 
   //----------------------------------------------------------------------------
-  //@NonCPS
+  /** */
   //@Synchronized
   public void create(Map properties = null) {
     if (this.exists()) {
@@ -47,67 +46,67 @@ class Resource implements Serializable {
   }
 
   //----------------------------------------------------------------------------
-  //@NonCPS
+  /** */
   public void save() {
     RM.save();
   }
 
   //----------------------------------------------------------------------------
-  //@NonCPS
+  /** */
   public boolean exists() {
     return RM.resourceExists(this.getName());
   }
 
   //----------------------------------------------------------------------------
-  //@NonCPS
+  /** */
   public boolean isFree() {
     return (!this.resource.isLocked() && !this.resource.isReserved() && !this.resource.isQueued());
   }
 
   //----------------------------------------------------------------------------
-  //@NonCPS
+  /** */
   public String getName() {
     return this.resource.name;
   }
 
   //----------------------------------------------------------------------------
-  //@NonCPS
+  /** */
   public String toString() {
     return this.getName();
   }
 
   //----------------------------------------------------------------------------
-  //@NonCPS
+  /** */
   public String getDescription() {
     return this.resource.description;
   }
 
   //----------------------------------------------------------------------------
-  //@NonCPS
+  /** */
   public void setDescription(String description) {
     this.resource.setDescription(description);
   }
 
   //----------------------------------------------------------------------------
-  //@NonCPS
+  /** */
   public String getNote() {
     return this.resource.note;
   }
 
   //----------------------------------------------------------------------------
-  //@NonCPS
+  /** */
   public void setNote(String note) {
     this.resource.setNote(note);
   }
 
   //----------------------------------------------------------------------------
-  //@NonCPS
+  /** */
   public boolean isEphemeral() {
     return this.resource.ephemeral;
   }
 
   //----------------------------------------------------------------------------
-  //@NonCPS
+  /** */
   public List<ResourceLabel> getLabels() {
     List<ResourceLabel> list = [];
     for(String label : this.resource.labelsAsList) {
@@ -117,13 +116,13 @@ class Resource implements Serializable {
   }
 
   //----------------------------------------------------------------------------
-  //@NonCPS
+  /** */
   public void setLabels(@NonNull def labels) {
     this.resource.setLabels(Resource.toLabelsString(labels));
   }
 
   //----------------------------------------------------------------------------
-  //@NonCPS
+  /** */
   public void addLabel(@NonNull ResourceLabel label) {
     if (this.resource.hasLabel(label.getName())) {
       return;
@@ -132,7 +131,7 @@ class Resource implements Serializable {
   }
 
   //----------------------------------------------------------------------------
-  //@NonCPS
+  /** */
   public void removeLabel(@NonNull ResourceLabel label) {
     if (!this.resource.hasLabel(label.getName())) {
       return;
@@ -141,19 +140,19 @@ class Resource implements Serializable {
   }
 
   //----------------------------------------------------------------------------
-  //@NonCPS
+  /** */
   public boolean hasLabel(@NonNull String label) {
     return this.resource.hasLabel(label);
   }
 
   //----------------------------------------------------------------------------
-  //@NonCPS
+  /** */
   public boolean hasLabel(@NonNull ResourceLabel label) {
     return hasLabel(label.getName());
   }
 
   //----------------------------------------------------------------------------
-  //@NonCPS
+  /** */
   public Map toMap() {
     Map map = [
       'name' : this.getName(),
@@ -198,7 +197,7 @@ class Resource implements Serializable {
   }
 
   //----------------------------------------------------------------------------
-  //@NonCPS
+  /** */
   public Map fromMap(@NonNull Map map) {
     this.resource.setDescription(map.description);
     this.resource.setNote(map.note);
@@ -206,7 +205,7 @@ class Resource implements Serializable {
   }
 
   //----------------------------------------------------------------------------
-  //@NonCPS
+  /** */
   private static String toLabelsString(labels) {
     String labelsString = "";
     if (labels == null) {

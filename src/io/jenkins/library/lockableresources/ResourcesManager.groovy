@@ -19,7 +19,7 @@ class ResourcesManager  implements Serializable {
   //---------------------------------------------------------------------------
   /**
   */
-  //@NonCPS
+  /** */
   @Restricted(NoExternalUse.class)
   @CheckForNull
   public static Resource getResource(@NonNull String resourceName) {
@@ -33,7 +33,7 @@ class ResourcesManager  implements Serializable {
   //---------------------------------------------------------------------------
   /**
   */
-  //@NonCPS
+  /** */
   @Restricted(NoExternalUse.class)
   public static Resource getResourceOrDie(@NonNull String resourceName) {
     Resource resource = ResourcesManager.getResource(resourceName);
@@ -46,7 +46,7 @@ class ResourcesManager  implements Serializable {
   //---------------------------------------------------------------------------
   /**
   */
-  //@NonCPS
+  /** */
   @Restricted(NoExternalUse.class)
   public static List<Resource> getResources(@NonNull List<String> resourceNames) {
     List<Resource> retList = [];
@@ -57,14 +57,14 @@ class ResourcesManager  implements Serializable {
   }
 
   //---------------------------------------------------------------------------
-  //@NonCPS
+  /** */
   @Restricted(NoExternalUse.class)
   public static List<Resource> getResources(ResourceLabel resourceLabel, Map opts = [:]) {
     return reOrder(toSafeList(LRM.get().getResourcesWithLabel(resourceLabel.name, [:])), opts);
   }
 
   //---------------------------------------------------------------------------
-  //@NonCPS
+  /** */
   @Restricted(NoExternalUse.class)
   public static List<Resource> getResources(Closure closure, Map opts = [:]) {
     Utils.echo('getResources 1');
@@ -82,21 +82,21 @@ Utils.echo('getResources 3');
   }
 
   //---------------------------------------------------------------------------
-  //@NonCPS
+  /** */
   @Restricted(NoExternalUse.class)
   public static List<Resource> getAllResources() {
     return toSafeList(LRM.get().getResources());
   }
 
   //---------------------------------------------------------------------------
-  //@NonCPS
+  /** */
   @Restricted(NoExternalUse.class)
   public static void save() {
     LRM.get().save();
   }
 
   //---------------------------------------------------------------------------
-  //@NonCPS
+  /** */
   @Restricted(NoExternalUse.class)
   public static boolean resourceExists(@NonNull String resourceName) {
     return LRM.get().fromName(resourceName) != null;
@@ -104,7 +104,7 @@ Utils.echo('getResources 3');
 
 
   //---------------------------------------------------------------------------
-  //@NonCPS
+  /** */
   private static List<Resource> reOrder(List<Resource> allMatches, Map opts) {
     opts = Utils.fixNullMap(opts);
 
