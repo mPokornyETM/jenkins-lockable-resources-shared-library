@@ -118,7 +118,7 @@ void _multipleLock(@NonNull List<Resource> resources, @NonNull Map opts, @NonNul
 
   try {
     if (opts.beforeLock != null) {
-      opts.beforeLock(resource);
+      opts.beforeLock(resources);
     }
     echo "variable: $opts.variable"//, inversePrecedence: $opts.inversePrecedence, skipIfLocked: $opts.skipIfLocked, extra : $extra"
     lock(
@@ -127,15 +127,15 @@ void _multipleLock(@NonNull List<Resource> resources, @NonNull Map opts, @NonNul
       skipIfLocked: opts.skipIfLocked,
       extra : extra
     ) {
-      _insideLock(resource, opts, closure);
+      _insideLock(resources, opts, closure);
     }
     if (opts.afterRelease != null) {
-      opts.afterRelease(resource);
+      opts.afterRelease(resources);
     }
   } catch (error) {
     boolean accepted = false;
     if (opts.onFailure != null) {
-      accepted = opts.onFailure(resource, error)
+      accepted = opts.onFailure(resources, error)
     }
     if (!accepted) {
       // not handled exception
@@ -145,7 +145,7 @@ void _multipleLock(@NonNull List<Resource> resources, @NonNull Map opts, @NonNul
 }
 
 //------------------------------------------------------------------------------
-void _insideLock(@NonNull Resource resource, @NonNull Map opts, @NonNull Closure closure) {
+void _insideLock(@NonNull Resource|List<Resource> resource, @NonNull Map opts, @NonNull Closure closure) {
 
   if (opts.timeout != null) {
     timeout(opts.timeout) {
