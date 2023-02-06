@@ -35,7 +35,7 @@ void call(@NonNull List<String> resourceNames, @NonNull Map opts, @NonNull Closu
 
 //-----------------------------------------------------------------------------
 void call(@NonNull List<Resource> resources, @NonNull Map opts, @NonNull Closure closure) {
-}
+
   opts = Utils.fixNullMap(opts);
   if (opts.createOnDemand) {
     for(Resource resource : resources) {
