@@ -28,7 +28,7 @@ void call(final String nodeName, Map opts, Closure closure) {
     // your node does not exists, we try to find it as label
     echo "findNodesByLabel $nodeName, $opts"
     List<Resource> matched = findNodesByLabel(nodeName, opts);
-    ListString matchedNames = [];
+    List<String> matchedNames = [];
     for(Resource resource : matched) {
       matchedNames.push(resource.getName());
     }
