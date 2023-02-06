@@ -30,11 +30,11 @@ void call(@NonNull String resourceName, @NonNull Map opts, @NonNull Closure clos
 // createOnDemand: create resource when does not exists
 // //@NonCPS
 void call(@NonNull List<String> resourceNames, @NonNull Map opts, @NonNull Closure closure) {
-  lockResource(lockableResource.find(resourceNames), opts, closure);
+  lockResources(lockableResource.find(resourceNames), opts, closure);
 }
 
 //-----------------------------------------------------------------------------
-void call(@NonNull List<Resource> resources, @NonNull Map opts, @NonNull Closure closure) {
+void lockResources(@NonNull List<Resource> resources, @NonNull Map opts, @NonNull Closure closure) {
 
   opts = Utils.fixNullMap(opts);
   if (opts.createOnDemand) {
