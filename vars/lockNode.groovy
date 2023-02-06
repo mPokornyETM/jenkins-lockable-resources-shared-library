@@ -28,21 +28,25 @@ void call(final String nodeName, Map opts, Closure closure) {
     // your node does not exists, we try to find it as label
     echo "findNodesByLabel $nodeName, $opts"
     List<Resource> matched = findNodesByLabel(nodeName, opts);
+    ListString matchedNames = [];
+    for(Resource resource : matched) {
+      matchedNames.push(resource.getName());
+    }
     if (matched.size() == 0) {
       throw(new Exception('No matches for: ' + nodeName));
     } else if (matched.size() == 1) {
       // exact one node, so call me back recursive, but with exact node name
-      lockNode(matched[0].getName(), opts, closure);
+      lockNode(matchedNames[0], opts, closure);
     } else {
       // mirror all requested nodes
-      for(Resource resource : matched) {
-        mirrorNodesToLockableResources(resource.getName(), mirrorOptions);
+      for(String name : matchedNames) {
+        mirrorNodesToLockableResources(name, mirrorOptions);
       }
     }
 
-    echo('Trying to acquire lock on ' + matched.size() + " node(s) [$nodeName]");
-    lockResource(matched, opts, closure);
-    echo('Trying to acquire lock on ' + matched.size() + " node(s) [$nodeName]");
+    echo("Trying to acquire lock on nodes [$matchedNames]");
+    lockResource(matchedNames, opts, closure);
+    echo("Lock released on nodes [$matchedNames]");
     /*
     for(int i = 0; i < matched.size(); i++) {
       String matchedNode = matched[i].getName();
