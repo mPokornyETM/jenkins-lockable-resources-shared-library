@@ -20,7 +20,7 @@ This shall helps to all Jenkins administrators to interact with lockable-resourc
 
 ## Usage
 
-Install [Global Shared Library](https://jenkins.io/doc/book/pipeline/shared-libraries/) on our Jenkins instance.
+Install [Global Shared Library](https://jenkins.io/doc/book/pipeline/shared-libraries/) and [lockable-resources plugin](https://github.com/jenkinsci/lockable-resources-plugin) on our Jenkins instance.
 Add this repository to your shared-libraries.
 Enjoy in your pipelines.
 <!-- TBD: describe detailed steps, and hallo world project-->
