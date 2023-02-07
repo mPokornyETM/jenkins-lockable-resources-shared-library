@@ -138,7 +138,7 @@ class ResourcesManager  implements Serializable {
       throw(new Exception("Parameter mismatch minCount $minCount vs quantity $quantity"));
     }
     if (minCount > allMatches.size()) {
-      throw(new Exception("You has expected $quantity resource(s), but there are currently only $allMatches.size"));
+      throw(new Exception("You has expected $quantity resource(s), but there are currently only " + allMatches.size()));
     }
 
     if (opts.randomize != null) {
