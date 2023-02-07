@@ -119,7 +119,6 @@ Map nodeToResourceProperties(Computer computer) {
 //-----------------------------------------------------------------------------
 /** */
 String  mirrorNodeToLockableResource(@NonNull String nodeName, @NonNull Map opts) {
-  echo 'mirror nodeName ' + nodeName + ', ' + opts;
   return _mirrorNodeToLockableResource(jenkins.model.Jenkins.instance.getComputer(nodeName), opts);
 }
 
