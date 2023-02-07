@@ -119,12 +119,17 @@ Map nodeToResourceProperties(Computer computer) {
 //-----------------------------------------------------------------------------
 /** */
 String  mirrorNodeToLockableResource(@NonNull String nodeName, @NonNull Map opts) {
-  return mirrorNodeToLockableResource(jenkins.model.Jenkins.instance.getComputer(nodeName), opts);
+  return _mirrorNodeToLockableResource(jenkins.model.Jenkins.instance.getComputer(nodeName), opts);
 }
 
 //-----------------------------------------------------------------------------
 /** */
 String mirrorNodeToLockableResource(@NonNull Computer computer, @NonNull Map opts) {
+  return _mirrorNodeToLockableResource(computer, opts);
+}
+
+//-----------------------------------------------------------------------------
+String _mirrorNodeToLockableResource(@NonNull Computer computer, @NonNull Map opts) {
   if (computer == null) {
     return null; // this node does not exists
   }

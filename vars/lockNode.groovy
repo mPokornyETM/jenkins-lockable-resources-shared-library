@@ -30,7 +30,7 @@ void call(final String nodeName, Map opts, Closure closure) {
     for(Resource resource : matched) {
       matchedNames.push(resource.getName());
     }
-    echo 'matchedNames: ' + matchedNames
+
     if (matched.size() == 0) {
       throw(new Exception('No matches for: ' + nodeName));
     } else if (matched.size() == 1) {
@@ -46,20 +46,6 @@ void call(final String nodeName, Map opts, Closure closure) {
     echo("Trying to acquire lock on nodes [$matchedNames]");
     lockResource(matchedNames, opts, closure);
     echo("Lock released on nodes [$matchedNames]");
-    /*
-    for(int i = 0; i < matched.size(); i++) {
-      String matchedNode = matched[i].getName();
-      if (i == (matched.size() -1)) {
-        echo("Trying to acquire lock on node [$nodeName]");
-        lockResource(matchedNode, opts) {
-          inLockScope(matchedNode, opts, closure);
-        }
-      } else {
-        echo("Trying to acquire lock on node [$nodeName]");
-        lockResource(matchedNode, opts) {}
-      }
-    }
-    */
   }
 }
 
